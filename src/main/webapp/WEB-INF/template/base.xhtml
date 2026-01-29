@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>
+            <ui:insert name="title-view">WorkUnity - Gestor de Proyectos</ui:insert>
+        </title>
+        <h:outputStylesheet library="styles" name="base.css"/>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body>
+
+        <div class="app-container">
+
+            <!-- Header -->
+            <header id="header">
+                <div class="header-container">
+                    <div class="header-content">
+                        <div class="logo-image">
+                            <p:graphicImage url="../../../images/WorkUnity_Logo.png"
+                                            alt="logo-header"
+                                            width="50"/>
+                            <span class="logo-text">
+                                <span class="word-Work">Work</span><span class="word-Unity">Unity</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Menu -->
+                    <ui:insert name="menu">
+                        <!-- Insertar Menu -->
+                    </ui:insert>
+
+                </div>
+            </header>
+
+            <!-- Contenido -->
+            <main id="content">
+                <div class="content-container">
+                    <div class="centered-card">
+                        <ui:insert name="content">
+                            <!-- Insertar Contenido -->
+                            <ui:debug hotkey="d"/>
+                        </ui:insert>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer>
+                <ui:insert name="footer">
+                    <!-- Insertar Footer -->
+                </ui:insert>
+            </footer>
+
+            <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+                <f:facet name="start">
+                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"/>
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value=""/>
+                </f:facet>
+            </p:ajaxStatus>
+
+        </div>
+    </h:body>
+</f:view>
+</html>

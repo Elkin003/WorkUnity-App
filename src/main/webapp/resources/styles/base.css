@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.header-container {
+    padding: 1rem 1.5rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-image {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-text {
+    font-family: sans-serif;
+    font-weight: 900;
+    font-size: 1.7rem;
+}
+
+.word-Work {
+    color: #1f4fd8;
+}
+
+.word-Unity {
+    color: #fb6b39;
+}
+
+.content-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.centered-card {
+    width: 95%;
+    max-width: 1200px;
+}

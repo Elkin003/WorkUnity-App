@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.0">
+    <persistence-unit name="workunityPU" transaction-type="JTA">
+        <jta-data-source>jdbc/workunityDS</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <!-- CONFIGURACION DE CONEXION A LA BD -->
+            <!-- SOLO FUNCIONA CON transaction-type="RESOURCE_LOCAL" -->
+            <!--
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgres://localhost:5434/jbrew"/>
+            <property name="jakarta.persistence.jdbc.user" value="jbrewuser"/>
+            <property name="jakarta.persistence.jdbc.password" value="jbrewUser2525"/>
+            -->
+            <!-- FIN CONFIGURACION DE CONEXION A LA BD -->
+
+            <!-- 1. Configuración de generación / actualización de tablas (esquema de BD) -->
+            <!-- Configuración de Jakarta persistence puede ser: none, create, drop-and-create, drop -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <!-- Configuración de EclipseLink values: none, drop-and-create-tables, create-tables, create-or-extend-tables -->
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <!-- database = ejecuta los comandos DDL directamente en la base de datos -->
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+
+            <!-- 2. Cargar script de inicialización de la BD -->
+            <property name="jakarta.persistence.sql-load-script-source"  value="META-INF/initial-data.sql"/>
+
+            <!-- Logs para depuración SQL -->
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+
+            <!-- Caché (opcional) -->
+            <property name="eclipselink.cache.shared.default" value="false"/>
+
+            <!-- Configuración para OpenLiberty -->
+            <property name="eclipselink.target-server" value="Liberty"/>
+
+        </properties>
+    </persistence-unit>
+</persistence>

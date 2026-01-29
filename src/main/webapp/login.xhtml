@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Login
+    </ui:define>
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="login.css"/>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div class="login-container">
+                <div class="login-card">
+
+                    <!-- Título -->
+                    <div class="login-title">Iniciar Sesión</div>
+
+                    <!-- Mensajes -->
+                    <p:messages showDetail="true" skipDetailIfEqualsSummary="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <div class="login-fields">
+                        <!-- Usuario -->
+                        <p:outputLabel for="username" value="Usuario"/>
+                        <p:inputText id="username"
+                                     value="#{authenticationController.username}"
+                                     required="true"
+                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <f:validateLength minimum="5"/>
+                        </p:inputText>
+                        <p:message for="username" showDetail="true" showSummary="true"/>
+
+                        <!-- Contraseña -->
+                        <p:outputLabel for="password" value="Contraseña"/>
+                        <p:password id="password"
+                                    value="#{authenticationController.password}"
+                                    required="true"
+                                    toggleMask="true"
+                                    redisplay="true"
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <f:validateLength minimum="8"/>
+                        </p:password>
+                        <p:message for="password" showDetail="true" showSummary="true"/>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="login-actions">
+                        <p:commandButton value="Ingresar"
+                                         action="#{authenticationController.username}"
+                                         icon="pi pi-sign-in" validateClient="true" styleClass="login-button"
+                                         update="@form" title="Accion de ingreso a la app"/>
+
+                        <p:commandButton value="Cancelar"
+                                         action="index.xhtml?faces-redirect=true"
+                                         immediate="true"
+                                         icon="pi pi-times"
+                                         styleClass="ui-button-secondary cancel-button"/>
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+    <ui:define name="footer">
+        <ui:include src="WEB-INF/template/fragments/footer.xhtml"/>
+    </ui:define>
+</ui:composition>
+</html>

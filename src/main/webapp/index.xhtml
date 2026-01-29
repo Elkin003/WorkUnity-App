@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Gestor de Proyectos
+    </ui:define>
+    <ui:define name="menu">
+        <!-- Barra con Login -->
+    </ui:define>
+    <ui:define name="content">
+        <div class="home-container">
+            <h1 class="home-title">
+                GESTIONA TUS PROYECTOS ACADÉMICOS EN EQUIPO
+            </h1>
+            <p class="home-title-description">
+                Organiza tareas, colabora con tu grupo y controla el avance de tus proyectos académicos
+            </p>
+            <div class="home-actions">
+                <h:form>
+                <p:commandButton value="Empieza a Gestionar tus Proyectos"
+                                 action="login.xhtml?faces-redirect=true"
+                                 styleClass="homme-actions-button"/>
+                </h:form>
+            </div>
+
+            <div class="about-container">
+                <h2 class="about-title">
+                    ¿QUÉ ES WORKUNITY?
+                </h2>
+                <p class="about-description">
+                    Es una plataforma para la gestión de proyectos, trabajo colaborativo y seguimiento de actividades universitarias.
+                </p>
+
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

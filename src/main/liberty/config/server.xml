@@ -1,0 +1,36 @@
+<server description="defaultServer">
+    <featureManager>
+        <feature>webProfile-10.0</feature>
+    </featureManager>
+
+    <basicRegistry id="defaultBasicRegistry" realm="BasicRealm">
+        <user name="username" password="password" />
+    </basicRegistry>
+
+    <keyStore id="defaultKeyStore" password="password" />
+
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9443" />
+
+    <webApplication location="workunity-app.war" contextRoot="/"/>
+
+    <!-- Configuración de salidas del log del server -->
+    <logging consoleFormat="SIMPLE" consoleLogLevel="INFO" />
+    <logging messageFormat="TBASIC" messageLogLevel="INFO" />
+    <!--logging traceFormat="ENHANCED" traceSpecification="*=all" /-->
+    <logging  traceSpecification="JPA=all" />
+
+    <!-- Configuración del database para comunicación de bd -->
+    <dataSource jndiName="jdbc/workunityDS">
+        <jdbcDriver id="postgres-driver" libraryRef="jdbcLib"/>
+        <properties.postgresql serverName="${dv.server.name}"
+                               portNumber="${db.port.number}"
+                               databaseName="jbrew"
+                               user="jbrewuser"
+                               password="jbrewUser2525"/>
+    </dataSource>
+
+    <!-- Referencia al driver JDBC de MySQL -->
+    <library id="jdbcLib">
+        <fileset dir="${driver.jdbc.dir}" includes="postgres-*.jar"/>
+    </library>
+</server>
