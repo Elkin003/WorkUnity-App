@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
-      xmlns:h="jakarta.faces.html">
-<f:view>
-    <h:head></h:head>
-    <h:body>
+      xmlns:jsf="jakarta.faces"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
 
-    </h:body>
-</f:view>
+
+<ui:composition>
+    <h:outputStylesheet library="styles" name="topbar.css"/>
+    <h:form id="menuForm">
+        <p:menubar styleClass="menu-bar">
+            <f:facet name="options">
+
+                <p:commandButton value="Login"
+                                 icon="pi pi-sign-in"
+                                 action="/login.xhtml?faces-redirect=true"
+                                 rendered="#{empty sessionScope.user}"
+                                 styleClass="login-nav-button" />
+
+                <p:menuButton value="#{userSession.user.name}"
+                              icon="pi pi-user"
+                              rendered="#{not empty sessionScope.user}"
+                              buttonStyleClass="user-menu-button">
+
+                    <p:menuitem value="Mi Perfil"
+                                icon="pi pi-user-edit"
+                                url="/profile.xhtml" />
+
+                    <p:separator />
+
+                    <p:menuitem value="Cerrar Sesión"
+                                action="#{authenticationController.logout}"
+                                icon="pi pi-sign-out"
+                                ajax="false" />
+                </p:menuButton>
+
+            </f:facet>
+        </p:menubar>
+    </h:form>
+</ui:composition>
 </html>

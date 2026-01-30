@@ -4,24 +4,23 @@
     justify-content: center;
     font-family: sans-serif;
     font-size: 18px;
-    line-height: 1px;
+    line-height: 2px;
 }
 
 .login-card {
-    height: 470px;
+    min-height: 470px;
     width: 450px;
     padding: 4rem 2.5rem;
     background: #ffffff;
-    border: 1px solid #dad9d9;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
 .login-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #0e0000;
+    color: #1a1a1a;
     padding-bottom: 2rem;
     text-align: center;
 }
@@ -31,8 +30,13 @@
     flex-direction: column;
     gap: 1.2rem;
     padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     width: 100% !important;
+}
+
+.login-fields .ui-outputlabel {
+    color: #4b5563 !important;
+    font-weight: 600;
 }
 
 .login-fields .ui-password input {
@@ -41,15 +45,37 @@
 
 .login-actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .login-button {
     width: 50%;
-    font-size: 1rem;
+    background-color: #1f4fd8 !important;
+    border-color: #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.login-button:hover {
+    background-color: #15359a !important;
 }
 
 .cancel-button {
     width: 50%;
-    font-size: 1rem;
+    background-color: #64748b !important;
+    border-color: #64748b !important;
+    color: #ffffff !important;
+}
+
+.cancel-button:hover {
+    background-color: #475569 !important;
+}
+
+.ui-message-error {
+    line-height: normal;
+}
+
+.ui-messages-error {
+    line-height: 3rem;
 }

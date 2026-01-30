@@ -9,35 +9,50 @@
     <ui:define name="title-view">
         WorkUnity - Gestor de Proyectos
     </ui:define>
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="index.css"/>
+    </ui:define>
     <ui:define name="menu">
-        <!-- Barra con Login -->
+        <ui:include src="WEB-INF/template/fragments/topbar.xhtml"/>
     </ui:define>
     <ui:define name="content">
         <div class="home-container">
-            <h1 class="home-title">
-                GESTIONA TUS PROYECTOS ACADÉMICOS EN EQUIPO
-            </h1>
-            <p class="home-title-description">
-                Organiza tareas, colabora con tu grupo y controla el avance de tus proyectos académicos
-            </p>
-            <div class="home-actions">
-                <h:form>
-                <p:commandButton value="Empieza a Gestionar tus Proyectos"
-                                 action="login.xhtml?faces-redirect=true"
-                                 styleClass="homme-actions-button"/>
-                </h:form>
+            <div class="home-title-section">
+                <div class="home-text">
+                    <h1 class="home-title">
+                        GESTIONA TUS PROYECTOS ACADÉMICOS EN EQUIPO
+                    </h1>
+                    <p class="home-title-description">
+                        Organiza tareas, colabora con tu grupo y controla el avance de tus proyectos académicos
+                    </p>
+                    <div class="home-actions">
+                        <h:form>
+                            <p:commandButton value="Empieza a Gestionar tus Proyectos"
+                                             action="login.xhtml?faces-redirect=true"
+                                             styleClass="home-actions-button ui-button-raised"/>
+                        </h:form>
+                    </div>
+                </div>
+                <div class="home-image">
+                    <p:graphicImage url="../../../images/WorkUnity_Vista_EJEMPLO.jpg"
+                                    alt="Vista-WorkUnity"
+                                    styleClass="image"/>
+                </div>
             </div>
+
+            <hr class="section-divider"/>
 
             <div class="about-container">
-                <h2 class="about-title">
-                    ¿QUÉ ES WORKUNITY?
-                </h2>
+                <h2 class="about-title">¿QUÉ ES WORKUNITY?</h2>
                 <p class="about-description">
-                    Es una plataforma para la gestión de proyectos, trabajo colaborativo y seguimiento de actividades universitarias.
+                    Es una plataforma diseñada para las necesidades del entorno académico,
+                    facilitando el trabajo colaborativo y la organización de proyectos académicos.
                 </p>
-
             </div>
         </div>
+    </ui:define>
+    <ui:define name="footer">
+        <ui:include src="WEB-INF/template/fragments/footer.xhtml"/>
     </ui:define>
 </ui:composition>
 </html>

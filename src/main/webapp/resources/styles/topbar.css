@@ -1,0 +1,28 @@
+.menu-bar {
+    background: transparent !important;
+    border: none !important;
+    margin-top: 5px;
+}
+
+.ui-menuitem-link .ui-menuitem-text {
+    color: #4b5563 !important;
+}
+
+.ui-menuitem-link:hover .ui-menuitem-text {
+    color: #1f4fd8 !important;
+}
+
+.login-nav-button {
+    background-color: #1f4fd8 !important;
+    border-color: #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.login-nav-button:hover {
+    background-color: #15359a !important;
+}
+
+.user-menu-button {
+    border-color: #1f4fd8 !important;
+    color: #1f4fd8 !important;
+}

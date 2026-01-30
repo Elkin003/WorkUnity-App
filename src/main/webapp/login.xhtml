@@ -29,23 +29,30 @@
                         <p:outputLabel for="username" value="Usuario"/>
                         <p:inputText id="username"
                                      value="#{authenticationController.username}"
+                                     label="Usuario"
                                      required="true"
                                      class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             <f:validateLength minimum="5"/>
+                            <p:clientValidator/>
                         </p:inputText>
                         <p:message for="username" showDetail="true" showSummary="true"/>
+
+
 
                         <!-- Contraseña -->
                         <p:outputLabel for="password" value="Contraseña"/>
                         <p:password id="password"
                                     value="#{authenticationController.password}"
                                     required="true"
+                                    label="Contraseña"
                                     toggleMask="true"
                                     redisplay="true"
                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                             <f:validateLength minimum="8"/>
+                            <p:clientValidator/>
                         </p:password>
                         <p:message for="password" showDetail="true" showSummary="true"/>
+
                     </div>
 
                     <!-- Botones -->
