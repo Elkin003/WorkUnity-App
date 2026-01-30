@@ -1,5 +1,6 @@
 .home-container {
     background-color: transparent;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .home-title-section {
@@ -7,59 +8,72 @@
     align-items: center;
     justify-content: space-between;
     gap: 3rem;
-    padding: 2rem 0;
+    padding: 4rem 0;
 }
 
 .home-text {
     flex: 1;
     text-align: left;
-    font-family: sans-serif;
 }
 
 .home-title {
     text-align: left;
-    color: #1a1a1a;
-    font-size: 2.5rem;
+    color: #fb6b39;
+    font-size: 2.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-shadow: 0 0 15px rgba(251, 107, 57, 0.3);
 }
 
 .home-title-description {
-    color: #4b5563;
-    font-size: 1.2rem;
+    color: #cbd5e1;
+    font-size: 1.1rem;
     line-height: 1.6;
+    margin-top: 1.5rem;
 }
 
 .home-actions-button {
     background-color: #1f4fd8 !important;
-    border-color: #1f4fd8 !important;
+    border: none !important;
     color: #ffffff !important;
-    padding: 0.8rem 2rem !important;
-    font-size: 1.1rem !important;
+    padding: 1rem 2.5rem !important;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    border-radius: 4px !important;
+    margin-top: 2rem;
+    box-shadow: 0 4px 15px rgba(31, 79, 216, 0.4);
 }
 
 .home-actions-button:hover {
     background-color: #15359a !important;
+    box-shadow: 0 6px 20px rgba(31, 79, 216, 0.6);
 }
 
 .section-divider {
     border: 0;
     height: 1px;
-    background-color: #e5e7eb;
+    background-color: #1e293b;
     margin: 4rem 0;
 }
 
 .about-container {
-    font-family: sans-serif;
-    padding-bottom: 4rem;
+    padding-bottom: 6rem;
 }
 
 .about-title {
-    color: #1a1a1a;
+    color: #fb6b39;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
 }
 
 .about-description {
-    color: #4b5563;
-    font-size: 1.2rem;
+    color: #cbd5e1;
+    font-size: 1.1rem;
     line-height: 1.6;
+    max-width: 800px;
 }
 
 .home-image {
@@ -71,19 +85,14 @@
 .image {
     width: 100%;
     max-width: 600px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     display: block;
-    transition: none;
 }
 
 .footer-container {
-    background-color: #0e2267 !important;
-    padding: 2rem;
-}
-
-.footer-container p {
-    color: #ffffff !important;
+    background-color: #000511 !important;
+    border-top: 1px solid #1e293b;
+    padding: 3rem;
 }

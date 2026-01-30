@@ -2,27 +2,45 @@
     background: transparent !important;
     border: none !important;
     margin-top: 5px;
+    font-family: 'Courier New', Courier, monospace !important;
 }
 
 .ui-menuitem-link .ui-menuitem-text {
-    color: #4b5563 !important;
+    color: #cbd5e1 !important;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 .ui-menuitem-link:hover .ui-menuitem-text {
-    color: #1f4fd8 !important;
+    color: #fb6b39 !important;
+    text-shadow: 0 0 8px rgba(251, 107, 57, 0.4);
 }
 
 .login-nav-button {
     background-color: #1f4fd8 !important;
-    border-color: #1f4fd8 !important;
+    border: none !important;
     color: #ffffff !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+    border-radius: 4px !important;
+    box-shadow: 0 0 10px rgba(31, 79, 216, 0.3);
 }
 
 .login-nav-button:hover {
     background-color: #15359a !important;
+    box-shadow: 0 0 15px rgba(31, 79, 216, 0.5);
 }
 
 .user-menu-button {
-    border-color: #1f4fd8 !important;
-    color: #1f4fd8 !important;
+    border: 1px solid #fb6b39 !important;
+    color: #fb6b39 !important;
+    background: transparent !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    text-transform: uppercase;
+    font-weight: bold !important;
+}
+
+.user-menu-button:hover {
+    background-color: rgba(251, 107, 57, 0.1) !important;
 }

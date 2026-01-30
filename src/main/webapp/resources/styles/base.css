@@ -1,12 +1,14 @@
 body {
     margin: 0;
+    background-color: #000511;
 }
 
 .app-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #000511;
+    flex: 1;
 }
 
 .header-container {
@@ -26,7 +28,7 @@ body {
 }
 
 .logo-text {
-    font-family: sans-serif;
+    font-family: 'Courier New', Courier, monospace !important;
     font-weight: 900;
     font-size: 1.7rem;
 }
