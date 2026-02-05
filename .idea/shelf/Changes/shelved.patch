@@ -1,0 +1,28 @@
+Index: docker-env
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docker-env b/docker-env
+new file mode 100644
+--- /dev/null	(date 1770332540889)
++++ b/docker-env	(date 1770332540889)
+@@ -0,0 +1,18 @@
++## VARIABLES DE ENTORNO PARA POSTGRES
++POSTGRES_VERSION=18.1-alpine
++DB_PGSQL_PORT_PUBLIC=5435
++LOCAL_DATA_DIR_BD=C:/sandbox_edu/workunity-db
++
++## VARIABLES DE ENTORNO COMUNES
++DB_NAME=workunity
++DB_USER=workunityuser
++DB_PWD=workunityUser2525
++
++## VARIABLES DE ENTORNO PARA CONFIGURACIÓN DE ACCESO A BD
++## DENTRO DEL CONTENEDOR DE LA APP
++DB_SERVER_NAME=jbrew-pg-db
++DB_PORT_NUMBER=5432
++
++#DRIVER_JDBC_DIR=target/lib/postgresql-42.7.3.jar
++DRIVER_JDBC_DIR=target/lib/*.jar
++
