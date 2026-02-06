@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="primefaces">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 <f:metadata>
     <f:viewParam name="projectId" value="#{projectDetailController.projectId}" />
     <f:viewAction action="#{projectDetailController.init}" />
@@ -21,11 +18,11 @@
     <ui:define name="content">
         <h:form id="projectDetailForm">
             <div class="proyecto-detalle-container">
-                <!-- Botón Volver -->
+                <!--Botón Volver -->
                 <p:commandButton value="Volver a Proyectos" action="#{projectDetailController.goBackToProjects}"
                                  icon="pi pi-arrow-left" styleClass="ui-button-secondary btn-volver" />
 
-                <!-- Información del Proyecto -->
+                <!--Información del Proyecto -->
                 <div class="proyecto-info-header">
                     <h2>#{projectDetailController.project.nombre}</h2>
                     <p><strong>Descripción:</strong> #{projectDetailController.project.descripcion}</p>
@@ -33,18 +30,18 @@
                     <p><strong>Fecha Límite:</strong> #{projectDetailController.project.fechaLimite}</p>
                 </div>
 
-                <!-- Mensajes -->
+                <!--Mensajes -->
                 <p:messages showDetail="true">
                     <p:autoUpdate />
                 </p:messages>
 
-                <!-- Botón Crear Tarea (solo para líderes) -->
+                <!--Botón Crear Tarea (solo para líderes) -->
                 <h:panelGroup layout="block" rendered="#{projectDetailController.currentUserLeader}">
                     <p:commandButton value="Nueva Tarea" icon="pi pi-plus" onclick="PF('newTaskDialog').show();"
                                      styleClass="ui-button-success btn-nueva-tarea" type="button" />
                 </h:panelGroup>
 
-                <!-- Lista de Tareas -->
+                <!--Lista de Tareas -->
                 <div class="tareas-section">
                     <h3>Tareas del Proyecto</h3>
                     <p:dataTable value="#{projectDetailController.tasks}" var="tarea"
@@ -76,7 +73,7 @@
                     </p:dataTable>
                 </div>
 
-                <!-- Lista de Miembros -->
+                <!--Lista de Miembros -->
                 <div class="miembros-section">
                     <h3>Miembros del Proyecto</h3>
                     <p:dataTable value="#{projectDetailController.members}" var="miembro"
@@ -93,39 +90,60 @@
                 </div>
             </div>
 
-            <!-- Dialog para Crear Tarea -->
-            <p:dialog header="Crear Nueva Tarea" widgetVar="newTaskDialog" modal="true" showEffect="fade"
-                      hideEffect="fade" resizable="false">
+            <!--Dialog para Crear Tarea - DISEÑO EXACTO -->
+            <p:dialog header="CREAR NUEVA TAREA"
+                      widgetVar="newTaskDialog"
+                      modal="true"
+                      closable="true"
+                      resizable="false"
+                      styleClass="dlg-tarea">
 
-                <div class="dialog-tarea">
-                    <p:panelGrid columns="2" layout="grid">
-                        <p:outputLabel for="taskTitle" value="Título:" />
-                        <p:inputText id="taskTitle" value="#{projectDetailController.newTaskTitle}" required="true"
-                                     style="width: 100%;" />
-
-                        <p:outputLabel for="taskDesc" value="Descripción:" />
-                        <p:inputTextarea id="taskDesc" value="#{projectDetailController.newTaskDescription}" rows="3"
-                                         required="true" style="width: 100%;" />
-
-                        <p:outputLabel for="taskDeadline" value="Fecha Límite:" />
-                        <p:calendar id="taskDeadline" value="#{projectDetailController.newTaskDeadline}" required="true"
-                                    pattern="dd/MM/yyyy" showButtonBar="true" />
-
-                        <p:outputLabel for="assignTo" value="Asignar a:" />
-                        <p:selectOneMenu id="assignTo" value="#{projectDetailController.selectedIntegranteId}">
+                <div class="dlg-grid">
+                    <!--Título -->
+                    <p:outputLabel for="taskTitle" value="Título:" styleClass="lbl"/>
+                    <div class="inp">
+                        <p:inputText id="taskTitle"
+                                     value="#{projectDetailController.newTaskTitle}"
+                                     required="true"/>
+                    </div>
+                    <!--Descripción -->
+                    <p:outputLabel for="taskDesc" value="Descripción:" styleClass="lbl"/>
+                    <div class="inp">
+                        <p:inputTextarea id="taskDesc"
+                                         value="#{projectDetailController.newTaskDescription}"
+                                         rows="3"
+                                         required="true"/>
+                    </div>
+                    <!--Fecha -->
+                    <p:outputLabel for="taskDeadline" value="Fecha Límite:" styleClass="lbl"/>
+                    <div class="inp">
+                        <p:datePicker id="taskDeadline"
+                                      value="#{projectDetailController.newTaskDeadline}"
+                                      required="true"
+                                      pattern="dd/MM/yyyy"/>
+                    </div>
+                    <!--Asignar -->
+                    <p:outputLabel for="assignTo" value="Asignar a:" styleClass="lbl"/>
+                    <div class="inp">
+                        <p:selectOneMenu id="assignTo"
+                                         value="#{projectDetailController.selectedIntegranteId}">
                             <f:selectItem itemLabel="Sin asignar" itemValue="#{null}" />
                             <f:selectItems value="#{projectDetailController.members}" var="m"
                                            itemLabel="#{m.entidad.fullName}" itemValue="#{m.id}" />
                         </p:selectOneMenu>
-                    </p:panelGrid>
-
-                    <div class="dialog-actions">
-                        <p:commandButton value="Cancelar" onclick="PF('newTaskDialog').hide();"
-                                         styleClass="ui-button-secondary btn-cancelar" type="button" />
-                        <p:commandButton value="Crear" action="#{projectDetailController.createTask}"
-                                         update="projectDetailForm" oncomplete="PF('newTaskDialog').hide();" icon="pi pi-check"
-                                         styleClass="ui-button-success" />
                     </div>
+                </div>
+                <div class="dlg-buttons">
+                    <p:commandButton value="Cancelar"
+                                     type="button"
+                                     onclick="PF('newTaskDialog').hide()"
+                                     styleClass="btn-cancelar"/>
+
+                    <p:commandButton value="Crear"
+                                     action="#{projectDetailController.createTask}"
+                                     update="projectDetailForm"
+                                     oncomplete="PF('newTaskDialog').hide();"
+                                     styleClass="btn-crear"/>
                 </div>
             </p:dialog>
         </h:form>

@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="primefaces">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 <ui:composition template="WEB-INF/template/base.xhtml">
     <ui:define name="title-view">
         WorkUnity - Mis Proyectos
@@ -16,19 +13,19 @@
     <ui:define name="content">
         <h:form id="projectForm">
             <div class="proyectos-container">
-                <!-- Título -->
+                <!--Título -->
                 <div class="proyectos-header">
                     <h2 class="proyectos-title">Mis Proyectos</h2>
                     <p:commandButton value="Nuevo Proyecto" icon="pi pi-plus" onclick="PF('newProjectDialog').show();"
                                      styleClass="ui-button-success" type="button" />
                 </div>
 
-                <!-- Mensajes -->
+                <!--Mensajes -->
                 <p:messages showDetail="true">
                     <p:autoUpdate />
                 </p:messages>
 
-                <!-- Lista de Proyectos en Cards -->
+                <!--Lista de Proyectos en Cards -->
                 <p:dataView value="#{projectListController.projects}" var="proyecto"
                             emptyMessage="No tienes proyectos. ¡Crea uno nuevo!" layout="grid" gridIcon="pi pi-th-large"
                             listIcon="pi pi-bars">

@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets"
-      xmlns:p="primefaces">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces">
 <f:metadata>
     <f:viewParam name="taskId" value="#{taskDetailController.taskId}" />
     <f:viewAction action="#{taskDetailController.init}" />
@@ -21,11 +18,11 @@
     <ui:define name="content">
         <h:form id="taskDetailForm">
             <div class="tarea-detalle-container">
-                <!-- Botón Volver -->
+                <!--Botón Volver -->
                 <p:commandButton value="Volver al Proyecto" action="#{taskDetailController.goBackToProject}"
                                  icon="pi pi-arrow-left" styleClass="ui-button-secondary btn-volver" />
 
-                <!-- Información de la Tarea -->
+                <!--Información de la Tarea -->
                 <div class="tarea-info-header">
                     <h2>#{taskDetailController.task.titulo}</h2>
                     <p><strong>Descripción:</strong> #{taskDetailController.task.descripcion}</p>
@@ -43,12 +40,12 @@
                     <p><strong>Proyecto:</strong> #{taskDetailController.task.proyecto.nombre}</p>
                 </div>
 
-                <!-- Mensajes -->
+                <!--Mensajes -->
                 <p:messages showDetail="true">
                     <p:autoUpdate />
                 </p:messages>
 
-                <!-- Acciones de la Tarea -->
+                <!--Acciones de la Tarea -->
                 <div class="acciones-section">
                     <h3>Acciones</h3>
                     <p:commandButton value="Cambiar a EN_CURSO"
@@ -65,11 +62,11 @@
                                      onclick="return confirm('¿Estás seguro de eliminar esta tarea?');" />
                 </div>
 
-                <!-- Comentarios -->
+                <!--Comentarios -->
                 <div class="comentarios-section">
                     <h3>Comentarios (#{taskDetailController.comments.size()})</h3>
 
-                    <!-- Lista de Comentarios -->
+                    <!--Lista de Comentarios -->
                     <div class="comentarios-list">
                         <ui:repeat value="#{taskDetailController.comments}" var="comentario">
                             <div class="comentario-item">
@@ -82,7 +79,7 @@
                         </ui:repeat>
                     </div>
 
-                    <!-- Agregar Comentario -->
+                    <!--Agregar Comentario -->
                     <div class="nuevo-comentario-box">
                         <h4>Agregar Comentario</h4>
                         <p:inputTextarea value="#{taskDetailController.newCommentText}" rows="3"

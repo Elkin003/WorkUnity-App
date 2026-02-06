@@ -1,26 +1,31 @@
-.menu-bar {
+/* ===== TOPBAR ===== */
+.topbar .ui-menubar {
     background: transparent !important;
     border: none !important;
     margin-top: 5px;
     font-family: 'Courier New', Courier, monospace !important;
 }
 
-.ui-menuitem-link .ui-menuitem-text {
+.topbar .ui-menuitem-link .ui-menuitem-text {
     color: #cbd5e1 !important;
     text-transform: uppercase;
     font-weight: bold;
 }
 
-.ui-menuitem-link:hover .ui-menuitem-text {
+.topbar .ui-menuitem-link:hover {
+    background: rgba(251, 107, 57, 0.08) !important;
+    border-radius: 4px;
+}
+
+.topbar .ui-menuitem-link:hover .ui-menuitem-text {
     color: #fb6b39 !important;
     text-shadow: 0 0 8px rgba(251, 107, 57, 0.4);
 }
 
-.login-nav-button {
+.login-nav-button.ui-button {
     background-color: #1f4fd8 !important;
     border: none !important;
     color: #ffffff !important;
-    font-family: 'Courier New', Courier, monospace !important;
     font-weight: bold !important;
     text-transform: uppercase;
     border-radius: 4px !important;
@@ -29,15 +34,12 @@
 
 .login-nav-button:hover {
     background-color: #15359a !important;
-    box-shadow: 0 0 15px rgba(31, 79, 216, 0.5);
 }
 
-.user-menu-button {
+.user-menu-button.ui-button {
     border: 1px solid #fb6b39 !important;
     color: #fb6b39 !important;
     background: transparent !important;
-    font-family: 'Courier New', Courier, monospace !important;
-    text-transform: uppercase;
     font-weight: bold !important;
 }
 

@@ -7,12 +7,14 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* Cambiado de #f4f4f4 al negro azulado del simulador */
     background-color: #000511 !important;
     flex: 1;
 }
 
 .header-container {
     padding: 1rem 1.5rem;
+    /* Añadimos un borde inferior muy sutil para delimitar el área técnica */
     border-bottom: 1px solid #1e293b;
 }
 
@@ -47,11 +49,89 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 2rem;
+    align-items: flex-start;
+    padding: 3rem 2rem;
+    background: #020617;
 }
+
 
 .centered-card {
     width: 95%;
-    max-width: 1200px;
+    max-width: 1400px;
+    background: #0b1220;
+    border-radius: 16px;
+    padding: 3rem;
+    border: 1px solid rgba(31, 79, 216, 0.25);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
 }
+
+.ui-widget-overlay {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ui-dialog {
+    background: #020617 !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+
+/*Header */
+.ui-dialog-titlebar {
+    background: #020617 !important;
+    border-bottom: 1px solid #1e293b !important;
+}
+
+.ui-dialog-title {
+    color: #e5e7eb !important;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.ui-dialog-titlebar-close {
+    filter: invert(1);
+}
+
+.ui-dialog-content {
+    background: #020617 !important;
+    color: #9aabbf !important;
+}
+
+.ui-panelgrid,
+.ui-panelgrid-content,
+.ui-panelgrid-cell {
+    background: transparent !important;
+    border: none !important;
+    color: #cbd5e1 !important;
+}
+
+/*Labels */
+.ui-dialog label {
+    color: #cbd5e1 !important;
+    font-weight: 500;
+}
+
+/*Inputs */
+.ui-dialog input,
+.ui-dialog textarea,
+.ui-dialog select {
+    background: #020617 !important;
+    color: #e5e7eb !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 8px;
+}
+
+.ui-dialog input::placeholder,
+.ui-dialog textarea::placeholder {
+    color: #64748b;
+}
+
+.ui-dialog-buttonpane {
+    background: transparent !important;
+    border-top: none !important;
+}
+
+html, body, #content, .content-container {
+    background: #0b1220;
+}
+
