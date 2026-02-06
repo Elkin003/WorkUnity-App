@@ -5,7 +5,7 @@
     align-items: center;
     font-family: 'Courier New', Courier, monospace;
     font-size: 18px;
-    line-height: normal;
+    line-height: 2rem;
 }
 
 .login-card {
@@ -75,6 +75,7 @@
 
 .login-button:hover {
     background-color: #15359a !important;
+    box-shadow: 0 6px 20px rgba(31, 79, 216, 0.5);
 }
 
 .cancel-button {

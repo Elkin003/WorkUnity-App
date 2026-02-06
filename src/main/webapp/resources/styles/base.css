@@ -7,12 +7,13 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #000511;
+    background-color: #000511 !important;
     flex: 1;
 }
 
 .header-container {
     padding: 1rem 1.5rem;
+    border-bottom: 1px solid #1e293b;
 }
 
 .header-content {
@@ -31,6 +32,7 @@ body {
     font-family: 'Courier New', Courier, monospace !important;
     font-weight: 900;
     font-size: 1.7rem;
+    text-transform: uppercase;
 }
 
 .word-Work {

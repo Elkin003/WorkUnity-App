@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<f:metadata>
+    <f:viewParam name="taskId" value="#{taskDetailController.taskId}" />
+    <f:viewAction action="#{taskDetailController.init}" />
+</f:metadata>
+
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Detalles de Tarea
+    </ui:define>
+
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="task-details.css" />
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="taskDetailForm">
+            <div class="tarea-detalle-container">
+                <!-- Botón Volver -->
+                <p:commandButton value="Volver al Proyecto" action="#{taskDetailController.goBackToProject}"
+                                 icon="pi pi-arrow-left" styleClass="ui-button-secondary btn-volver" />
+
+                <!-- Información de la Tarea -->
+                <div class="tarea-info-header">
+                    <h2>#{taskDetailController.task.titulo}</h2>
+                    <p><strong>Descripción:</strong> #{taskDetailController.task.descripcion}</p>
+                    <p><strong>Estado:</strong>
+                        <p:badge value="#{taskDetailController.task.estado}"
+                                 severity="#{taskDetailController.task.estado == 'COMPLETADA' ? 'success' : (taskDetailController.task.estado == 'ATRASADA' ? 'danger' : 'info')}" />
+                    </p>
+                    <p><strong>Asignado a:</strong>
+                        #{taskDetailController.task.integranteAsignado != null ?
+                                taskDetailController.task.integranteAsignado.entidad.fullName : 'Sin asignar'}
+                    </p>
+                    <p><strong>Fecha de Asignación:</strong> #{taskDetailController.task.fechaAsignacion}</p>
+                    <p><strong>Fecha Límite:</strong> #{taskDetailController.task.fechaLimite}</p>
+                    <p><strong>Entregada:</strong> #{taskDetailController.task.entregada ? 'Sí' : 'No'}</p>
+                    <p><strong>Proyecto:</strong> #{taskDetailController.task.proyecto.nombre}</p>
+                </div>
+
+                <!-- Mensajes -->
+                <p:messages showDetail="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <!-- Acciones de la Tarea -->
+                <div class="acciones-section">
+                    <h3>Acciones</h3>
+                    <p:commandButton value="Cambiar a EN_CURSO"
+                                     action="#{taskDetailController.changeStatus('EN_CURSO')}" update="taskDetailForm"
+                                     styleClass="ui-button-info ui-button-sm btn-accion" />
+                    <p:commandButton value="Cambiar a COMPLETADA"
+                                     action="#{taskDetailController.changeStatus('COMPLETADA')}" update="taskDetailForm"
+                                     styleClass="ui-button-success ui-button-sm btn-accion" />
+                    <p:commandButton value="Cambiar a ATRASADA"
+                                     action="#{taskDetailController.changeStatus('ATRASADA')}" update="taskDetailForm"
+                                     styleClass="ui-button-warning ui-button-sm btn-accion" />
+                    <p:commandButton value="Eliminar Tarea" action="#{taskDetailController.deleteTask}"
+                                     styleClass="ui-button-danger ui-button-sm"
+                                     onclick="return confirm('¿Estás seguro de eliminar esta tarea?');" />
+                </div>
+
+                <!-- Comentarios -->
+                <div class="comentarios-section">
+                    <h3>Comentarios (#{taskDetailController.comments.size()})</h3>
+
+                    <!-- Lista de Comentarios -->
+                    <div class="comentarios-list">
+                        <ui:repeat value="#{taskDetailController.comments}" var="comentario">
+                            <div class="comentario-item">
+                                <p>
+                                    <span class="comentario-autor">#{comentario.autor.entidad.fullName}</span>
+                                    <span class="comentario-fecha"> - #{comentario.fechaCreacion}</span>
+                                </p>
+                                <p class="comentario-texto">#{comentario.texto}</p>
+                            </div>
+                        </ui:repeat>
+                    </div>
+
+                    <!-- Agregar Comentario -->
+                    <div class="nuevo-comentario-box">
+                        <h4>Agregar Comentario</h4>
+                        <p:inputTextarea value="#{taskDetailController.newCommentText}" rows="3"
+                                         placeholder="Escribe tu comentario aquí..." styleClass="comentario-textarea" />
+                        <p:commandButton value="Publicar Comentario" action="#{taskDetailController.addComment}"
+                                         update="taskDetailForm" icon="pi pi-send" styleClass="ui-button-success" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

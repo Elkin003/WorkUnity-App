@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Mis Proyectos
+    </ui:define>
+
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="projects.css" />
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="projectForm">
+            <div class="proyectos-container">
+                <!-- Título -->
+                <div class="proyectos-header">
+                    <h2 class="proyectos-title">Mis Proyectos</h2>
+                    <p:commandButton value="Nuevo Proyecto" icon="pi pi-plus" onclick="PF('newProjectDialog').show();"
+                                     styleClass="ui-button-success" type="button" />
+                </div>
+
+                <!-- Mensajes -->
+                <p:messages showDetail="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <!-- Lista de Proyectos en Cards -->
+                <p:dataView value="#{projectListController.projects}" var="proyecto"
+                            emptyMessage="No tienes proyectos. ¡Crea uno nuevo!" layout="grid" gridIcon="pi pi-th-large"
+                            listIcon="pi pi-bars">
+
+                    <p:dataViewGridItem>
+                        <div class="proyecto-card">
+                            <h3>#{proyecto.nombre}</h3>
+                            <p>#{proyecto.descripcion}</p>
+
+                            <div class="proyecto-info-box">
+                                <p><strong>Fecha Límite:</strong> #{proyecto.fechaLimite}</p>
+                                <p><strong>Tareas:</strong> #{proyecto.tareas.size()}</p>
+                                <p><strong>Miembros:</strong> #{proyecto.miembros.size()}</p>
+                            </div>
+
+                            <p:commandButton value="Ver Detalles"
+                                             action="#{projectListController.viewProject(proyecto)}" icon="pi pi-eye"
+                                             styleClass="ui-button-success btn-ver-proyecto" immediate="true" ajax="false" />
+                        </div>
+                    </p:dataViewGridItem>
+                </p:dataView>
+            </div>
+
+            <!-- Dialog para Crear Proyecto -->
+            <p:dialog header="Crear Nuevo Proyecto" widgetVar="newProjectDialog" modal="true" showEffect="fade"
+                      hideEffect="fade" resizable="false">
+
+                <div class="dialog-proyecto">
+                    <p:panelGrid columns="2" layout="grid">
+                        <p:outputLabel for="projectName" value="Nombre:" />
+                        <p:inputText id="projectName" value="#{projectListController.newProjectName}" required="true"
+                                     style="width: 100%;" />
+
+                        <p:outputLabel for="projectDesc" value="Descripción:" />
+                        <p:inputTextarea id="projectDesc" value="#{projectListController.newProjectDescription}"
+                                         rows="3" required="true" style="width: 100%;" />
+
+                        <p:outputLabel for="projectDeadline" value="Fecha Límite:" />
+                        <p:calendar id="projectDeadline" value="#{projectListController.newProjectDeadline}"
+                                    required="true" pattern="dd/MM/yyyy" showButtonBar="true" />
+                    </p:panelGrid>
+
+                    <div class="dialog-actions">
+                        <p:commandButton value="Cancelar" onclick="PF('newProjectDialog').hide();"
+                                         styleClass="ui-button-secondary btn-cancelar" type="button" />
+                        <p:commandButton value="Crear" action="#{projectListController.createProject}"
+                                         update="projectForm" oncomplete="PF('newProjectDialog').hide();" icon="pi pi-check"
+                                         styleClass="ui-button-success" />
+                    </div>
+                </div>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<f:metadata>
+    <f:viewParam name="projectId" value="#{projectDetailController.projectId}" />
+    <f:viewAction action="#{projectDetailController.init}" />
+</f:metadata>
+
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Detalles del Proyecto
+    </ui:define>
+
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="project-details.css" />
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="projectDetailForm">
+            <div class="proyecto-detalle-container">
+                <!-- Botón Volver -->
+                <p:commandButton value="Volver a Proyectos" action="#{projectDetailController.goBackToProjects}"
+                                 icon="pi pi-arrow-left" styleClass="ui-button-secondary btn-volver" />
+
+                <!-- Información del Proyecto -->
+                <div class="proyecto-info-header">
+                    <h2>#{projectDetailController.project.nombre}</h2>
+                    <p><strong>Descripción:</strong> #{projectDetailController.project.descripcion}</p>
+                    <p><strong>Creado por:</strong> #{projectDetailController.project.creador.fullName}</p>
+                    <p><strong>Fecha Límite:</strong> #{projectDetailController.project.fechaLimite}</p>
+                </div>
+
+                <!-- Mensajes -->
+                <p:messages showDetail="true">
+                    <p:autoUpdate />
+                </p:messages>
+
+                <!-- Botón Crear Tarea (solo para líderes) -->
+                <h:panelGroup layout="block" rendered="#{projectDetailController.currentUserLeader}">
+                    <p:commandButton value="Nueva Tarea" icon="pi pi-plus" onclick="PF('newTaskDialog').show();"
+                                     styleClass="ui-button-success btn-nueva-tarea" type="button" />
+                </h:panelGroup>
+
+                <!-- Lista de Tareas -->
+                <div class="tareas-section">
+                    <h3>Tareas del Proyecto</h3>
+                    <p:dataTable value="#{projectDetailController.tasks}" var="tarea"
+                                 emptyMessage="No hay tareas en este proyecto">
+
+                        <p:column headerText="Título">
+                            <h:outputText value="#{tarea.titulo}" />
+                        </p:column>
+
+                        <p:column headerText="Estado">
+                            <p:badge value="#{tarea.estado}"
+                                     severity="#{tarea.estado == 'COMPLETADA' ? 'success' : (tarea.estado == 'ATRASADA' ? 'danger' : 'info')}" />
+                        </p:column>
+
+                        <p:column headerText="Asignado a">
+                            <h:outputText
+                                    value="#{tarea.integranteAsignado != null ? tarea.integranteAsignado.entidad.fullName : 'Sin asignar'}" />
+                        </p:column>
+
+                        <p:column headerText="Fecha Límite">
+                            <h:outputText value="#{tarea.fechaLimite}" />
+                        </p:column>
+
+                        <p:column headerText="Acciones">
+                            <p:commandButton value="Ver" action="#{projectDetailController.viewTask(tarea)}"
+                                             icon="pi pi-eye" styleClass="ui-button-info ui-button-sm" immediate="true"
+                                             ajax="false" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+
+                <!-- Lista de Miembros -->
+                <div class="miembros-section">
+                    <h3>Miembros del Proyecto</h3>
+                    <p:dataTable value="#{projectDetailController.members}" var="miembro"
+                                 emptyMessage="No hay miembros">
+
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{miembro.entidad.fullName}" />
+                        </p:column>
+
+                        <p:column headerText="Rol">
+                            <p:badge value="#{miembro.rol}" severity="#{miembro.rol == 'LIDER' ? 'warning' : 'info'}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <!-- Dialog para Crear Tarea -->
+            <p:dialog header="Crear Nueva Tarea" widgetVar="newTaskDialog" modal="true" showEffect="fade"
+                      hideEffect="fade" resizable="false">
+
+                <div class="dialog-tarea">
+                    <p:panelGrid columns="2" layout="grid">
+                        <p:outputLabel for="taskTitle" value="Título:" />
+                        <p:inputText id="taskTitle" value="#{projectDetailController.newTaskTitle}" required="true"
+                                     style="width: 100%;" />
+
+                        <p:outputLabel for="taskDesc" value="Descripción:" />
+                        <p:inputTextarea id="taskDesc" value="#{projectDetailController.newTaskDescription}" rows="3"
+                                         required="true" style="width: 100%;" />
+
+                        <p:outputLabel for="taskDeadline" value="Fecha Límite:" />
+                        <p:calendar id="taskDeadline" value="#{projectDetailController.newTaskDeadline}" required="true"
+                                    pattern="dd/MM/yyyy" showButtonBar="true" />
+
+                        <p:outputLabel for="assignTo" value="Asignar a:" />
+                        <p:selectOneMenu id="assignTo" value="#{projectDetailController.selectedIntegranteId}">
+                            <f:selectItem itemLabel="Sin asignar" itemValue="#{null}" />
+                            <f:selectItems value="#{projectDetailController.members}" var="m"
+                                           itemLabel="#{m.entidad.fullName}" itemValue="#{m.id}" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <div class="dialog-actions">
+                        <p:commandButton value="Cancelar" onclick="PF('newTaskDialog').hide();"
+                                         styleClass="ui-button-secondary btn-cancelar" type="button" />
+                        <p:commandButton value="Crear" action="#{projectDetailController.createTask}"
+                                         update="projectDetailForm" oncomplete="PF('newTaskDialog').hide();" icon="pi pi-check"
+                                         styleClass="ui-button-success" />
+                    </div>
+                </div>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

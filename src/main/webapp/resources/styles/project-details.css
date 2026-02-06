@@ -1,0 +1,186 @@
+.proyecto-detalle-container {
+    padding: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.btn-volver {
+    margin-bottom: 2rem;
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid #1e293b !important;
+    color: #cbd5e1 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.btn-volver:hover {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: #1f4fd8 !important;
+    box-shadow: 0 4px 15px rgba(31, 79, 216, 0.2);
+    transform: translateX(-4px);
+}
+
+.proyecto-info-header {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(251, 107, 57, 0.3);
+    box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.proyecto-info-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #fb6b39 0%, #1f4fd8 100%);
+}
+
+.proyecto-info-header h2 {
+    color: #fb6b39;
+    margin: 0 0 1.5rem 0;
+    font-weight: 900;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(251, 107, 57, 0.4);
+}
+
+.proyecto-info-header p {
+    margin: 0.75rem 0;
+    color: #cbd5e1;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.proyecto-info-header strong {
+    color: #fb6b39;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    margin-right: 0.5rem;
+}
+
+.tareas-section {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tareas-section h3 {
+    color: #fb6b39;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(251, 107, 57, 0.3);
+}
+
+.btn-nueva-tarea {
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #1f4fd8 0%, #15359a 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0.875rem 1.75rem !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 15px rgba(31, 79, 216, 0.3);
+    transition: all 0.3s ease !important;
+    letter-spacing: 1px;
+}
+
+.btn-nueva-tarea:hover {
+    background: linear-gradient(135deg, #15359a 0%, #1f4fd8 100%) !important;
+    box-shadow:
+            0 6px 20px rgba(31, 79, 216, 0.5),
+            0 0 30px rgba(31, 79, 216, 0.3);
+    transform: translateY(-2px);
+}
+
+.miembros-section {
+    margin-top: 3rem;
+}
+
+.miembros-section h3 {
+    color: #fb6b39;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(251, 107, 57, 0.3);
+}
+
+.proyecto-detalle-container .ui-datatable {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border: 1px solid rgba(31, 79, 216, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.proyecto-detalle-container .ui-datatable .ui-datatable-header {
+    background: rgba(0, 5, 17, 0.6);
+    border-color: #1e293b;
+    color: #cbd5e1;
+}
+
+.proyecto-detalle-container .ui-datatable thead th {
+    background: rgba(0, 5, 17, 0.8);
+    border-color: #1e293b;
+    color: #fb6b39;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.proyecto-detalle-container .ui-datatable tbody td {
+    background: rgba(30, 41, 59, 0.3);
+    border-color: rgba(30, 41, 59, 0.5);
+    color: #cbd5e1;
+}
+
+.proyecto-detalle-container .ui-datatable tbody tr:hover td {
+    background: rgba(31, 79, 216, 0.1);
+}
+
+.dialog-tarea {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(0, 5, 17, 0.98) 100%);
+    border: 1px solid rgba(31, 79, 216, 0.3);
+    border-radius: 8px;
+}
+
+.dialog-actions {
+    margin-top: 1.5rem;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.dialog-actions .btn-cancelar {
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid #1e293b !important;
+    color: #cbd5e1 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+}
