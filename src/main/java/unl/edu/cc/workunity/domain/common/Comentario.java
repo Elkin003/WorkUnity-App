@@ -1,27 +1,53 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * @author Elkin Jiménez
  */
-public class Comentario {
+@Entity
+@Table(name = "comentario")
+public class Comentario implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, length = 1000)
     private String texto;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaCreacion;
 
-    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id", nullable = false)
+    @NotNull
     private Integrante autor;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tarea_id", nullable = false)
+    @NotNull
     private Tarea tarea;
+
+    public Comentario() {
+    }
 
     public Comentario(String texto, Integrante autor) {
         this.texto = texto;
         this.autor = autor;
         this.fechaCreacion = LocalDate.now();
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -87,4 +113,3 @@ public class Comentario {
                 '}';
     }
 }
-

@@ -1,9 +1,13 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
-import unl.edu.cc.workunity.domain.enums.EstadoTarea;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import unl.edu.cc.workunity.domain.common.enums.EstadoTarea;
 import unl.edu.cc.workunity.exception.InvalidFile;
 import unl.edu.cc.workunity.exception.UnauthorizedAccessException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +16,58 @@ import java.util.Objects;
 /**
  * @author Elkin Jiménez
  */
-public class Tarea {
+@Entity
+@Table(name = "tarea")
+public class Tarea implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, length = 150)
     private String titulo;
+
+    @Column(length = 1000)
     private String descripcion;
+
+    @Column(nullable = false)
     private boolean entregada;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private EstadoTarea estado;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaAsignacion;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaLimite;
 
-    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "integrante_asignado_id")
     private Integrante integranteAsignado;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proyecto_id", nullable = false)
+    @NotNull
     private Proyecto proyecto;
+
+    @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentarios;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "archivo_adjunto_id")
     private ArchivoAdjunto archivo;
+
+    public Tarea() {
+    }
 
     public Tarea(String titulo, String descripcion, LocalDate fechaLimite, Proyecto proyecto) {
         if (fechaLimite.isBefore(LocalDate.now())) {
@@ -65,8 +107,6 @@ public class Tarea {
         }
         setEntregada(true);
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -192,12 +232,6 @@ public class Tarea {
                 ", estado=" + estado +
                 ", fechaAsignacion=" + fechaAsignacion +
                 ", fechaLimite=" + fechaLimite +
-                ", integranteAsignado="
-                + (integranteAsignado != null ? integranteAsignado.getEntidad().getNombre() : "Sin asignar") +
-                ", proyecto=" + (proyecto != null ? proyecto.getNombre() : "null") +
-                ", comentarios=" + getComentarios().size() +
-                ", archivo=" + archivo +
                 '}';
     }
 }
-

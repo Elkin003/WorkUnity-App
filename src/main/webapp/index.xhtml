@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core"
       xmlns:ui="jakarta.faces.facelets"
@@ -28,19 +27,21 @@
                     <div class="home-actions">
                         <h:form>
                             <p:commandButton value="Empieza a Gestionar tus Proyectos"
-                                             action="login.xhtml?faces-redirect=true"
-                                             styleClass="home-actions-button ui-button-raised"/>
+                                action="login.xhtml?faces-redirect=true"
+                                styleClass="home-actions-button ui-button-raised"/>
+                            <p:commandButton value="Crear Cuenta" action="register.xhtml?faces-redirect=true"
+                                icon="pi pi-user-plus" styleClass="ui-button-raised ui-button-success"
+                                style="margin-left: 1rem;"/>
                         </h:form>
                     </div>
                 </div>
                 <div class="home-image">
-                    <p:graphicImage url="../../../images/WorkUnity-Ejemplo.png"
-                                    alt="Vista-WorkUnity"
-                                    styleClass="image"/>
+                    <p:graphicImage url="../../../images/WorkUnity_Vista_EJEMPLO.jpg" alt="Vista-WorkUnity"
+                        styleClass="image"/>
                 </div>
             </div>
 
-            <hr class="section-divider"/>
+            <hr class="section-divider" />
 
             <div class="about-container">
                 <h2 class="about-title">¿QUÉ ES WORKUNITY?</h2>

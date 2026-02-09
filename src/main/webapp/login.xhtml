@@ -27,35 +27,34 @@
                     <div class="login-fields">
 
                         <!-- Usuario -->
-                        <p:outputLabel for="username" value="Usuario" />
+                        <p:outputLabel for="username" value="Usuario"/>
                         <p:inputText id="username" value="#{authenticationController.username}" label="Usuario"
                                      required="true"
-                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <f:validateLength minimum="5" />
-                            <p:clientValidator />
-                        </p:inputText>
-                        <p:message for="username" showDetail="true" showSummary="true" />
+                                     class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
 
                         <!-- Contraseña -->
-                        <p:outputLabel for="password" value="Contraseña" />
+                        <p:outputLabel for="password" value="Contraseña"/>
                         <p:password id="password" value="#{authenticationController.password}" required="true"
                                     label="Contraseña" toggleMask="true" redisplay="true"
-                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                            <f:validateLength minimum="8" />
-                            <p:clientValidator />
-                        </p:password>
-                        <p:message for="password" showDetail="true" showSummary="true" />
+                                    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
 
                     </div>
 
                     <!-- Botones -->
                     <div class="login-actions">
                         <p:commandButton value="Ingresar" action="#{authenticationController.login}"
-                                         icon="pi pi-sign-in" validateClient="true" styleClass="login-button" update="@form"
-                                         title="Accion de ingreso a la app" />
+                                         icon="pi pi-sign-in" validateClient="true" styleClass="login-button"
+                                         update="@form"
+                                         title="Accion de ingreso a la app"/>
 
                         <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"
-                                         icon="pi pi-times" styleClass="ui-button-secondary cancel-button" />
+                                         icon="pi pi-times" styleClass="ui-button-secondary cancel-button"/>
+                    </div>
+
+                    <!-- Link a Register -->
+                    <div class="login-register-link">
+                        ¿No tienes cuenta?
+                        <h:link outcome="register" value="Regístrate aquí"/>
                     </div>
 
                 </div>

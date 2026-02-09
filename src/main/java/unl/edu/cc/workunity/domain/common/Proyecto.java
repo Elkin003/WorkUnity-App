@@ -1,5 +1,10 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +13,45 @@ import java.util.Objects;
 /**
  * @author Cristian Guaman
  */
-public class Proyecto {
+@Entity
+@Table(name = "proyecto")
+public class Proyecto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, length = 100)
     private String nombre;
+
+    @Column(length = 500)
     private String descripcion;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaCreacion;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaLimite;
 
-    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creador_id", nullable = false)
+    @NotNull
     private Entidad creador;
+
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Integrante> miembros;
+
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tarea> tareas;
+
+    public Proyecto() {
+    }
 
     public Proyecto(String nombre, String descripcion, LocalDate fechaLimite, Entidad creador) {
         if (fechaLimite.isBefore(LocalDate.now())) {
@@ -30,8 +63,6 @@ public class Proyecto {
         this.fechaLimite = fechaLimite;
         this.creador = creador;
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -126,10 +157,6 @@ public class Proyecto {
                 ", descripcion='" + descripcion + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
                 ", fechaLimite=" + fechaLimite +
-                ", creador=" + (creador != null ? creador.getNombre() : "null") +
-                ", miembros=" + getMiembros().size() +
-                ", tareas=" + getTareas().size() +
                 '}';
     }
 }
-

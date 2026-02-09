@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Mi Perfil
+    </ui:define>
+
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="profile.css"/>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="WEB-INF/template/fragments/topbar.xhtml"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="profile-container">
+            <!-- Información del Usuario -->
+            <div class="profile-header">
+                <h2>Mi Perfil</h2>
+            </div>
+
+            <div class="profile-content">
+
+                <!-- Card de Información Personal -->
+                <div class="profile-card">
+                    <h3>Información Personal</h3>
+                    <div class="profile-info">
+                        <div class="profile-info-row">
+                            <strong>Usuario:</strong>
+                            <span>#{profileController.currentUser.name}</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <strong>Nombre Completo:</strong>
+                            <span>#{profileController.currentUser.entidad.fullName}</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <strong>Teléfono:</strong>
+                            <span>#{profileController.currentUser.entidad.numeroTelefono}</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <strong>Email:</strong>
+                            <span>#{profileController.currentUser.email}</span>
+                        </div>
+                        <div class="profile-info-row">
+                            <strong>Fecha de Registro:</strong>
+                            <span>#{profileController.currentUser.entidad.fechaCreacion}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Estadísticas -->
+                <div class="profile-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-briefcase"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">#{profileController.projectCount}</div>
+                            <div class="stat-label">Proyectos Creados</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">#{profileController.membershipCount}</div>
+                            <div class="stat-label">Proyectos Participando</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="pi pi-check-square"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">#{profileController.taskCount}</div>
+                            <div class="stat-label">Tareas Asignadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="footer">
+        <ui:include src="WEB-INF/template/fragments/footer.xhtml"/>
+    </ui:define>
+</ui:composition>
+</html>

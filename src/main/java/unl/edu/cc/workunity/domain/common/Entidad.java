@@ -1,29 +1,61 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import unl.edu.cc.workunity.domain.common.enums.Rol;
+import unl.edu.cc.workunity.domain.security.User;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import unl.edu.cc.workunity.domain.enums.Rol;
-import unl.edu.cc.workunity.domain.security.User;
 
 /**
  * Entidad representa el perfil de un usuario en el sistema.
  *
  * @author Cristian Guaman
  */
-public class Entidad {
+@Entity
+@Table(name = "entidad")
+public class Entidad implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, length = 100)
     private String nombre;
+
+    @NotNull
+    @NotEmpty
+    @Column(nullable = false, length = 100)
     private String apellido;
+
+    @Column(length = 15)
     private String numeroTelefono;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate fechaCreacion;
 
-    // Relaciones
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", unique = true)
     private User usuario;
+
+    @OneToMany(mappedBy = "creador", cascade = CascadeType.ALL)
     private List<Proyecto> proyectos;
+
+    @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL)
     private List<Integrante> integrantes;
+
+    public Entidad() {
+    }
 
     public Entidad(String nombre, String apellido, String numeroTelefono) {
         this.nombre = nombre;
@@ -32,9 +64,6 @@ public class Entidad {
         this.fechaCreacion = LocalDate.now();
     }
 
-    /**
-     * Retorna el nombre completo de la entidad
-     */
     public String getFullName() {
         return nombre + " " + apellido;
     }
@@ -67,8 +96,6 @@ public class Entidad {
         this.getIntegrantes().add(integrante);
         proyecto.getMiembros().add(integrante);
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -163,8 +190,6 @@ public class Entidad {
                 ", apellido='" + apellido + '\'' +
                 ", numeroTelefono='" + numeroTelefono + '\'' +
                 ", fechaCreacion=" + fechaCreacion +
-                ", proyectos=" + getProyectos().size() +
-                ", integrantes=" + getIntegrantes().size() +
                 '}';
     }
 }

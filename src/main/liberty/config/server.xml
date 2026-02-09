@@ -22,15 +22,15 @@
     <!-- Configuración del database para comunicación de bd -->
     <dataSource jndiName="jdbc/workunityDS">
         <jdbcDriver id="postgres-driver" libraryRef="jdbcLib"/>
-        <properties.postgresql serverName="${dv.server.name}"
+        <properties.postgresql serverName="${db.server.name}"
                                portNumber="${db.port.number}"
-                               databaseName="jbrew"
-                               user="jbrewuser"
-                               password="jbrewUser2525"/>
+                               databaseName="workunity"
+                               user="workunityuser"
+                               password="workunityUser2525"/>
     </dataSource>
 
-    <!-- Referencia al driver JDBC de MySQL -->
+    <!-- Referencia al driver JDBC de PostgreSQL -->
     <library id="jdbcLib">
-        <fileset dir="${driver.jdbc.dir}" includes="postgres-*.jar"/>
+        <fileset dir="${driver.jdbc.dir}" includes="postgresql-*.jar"/>
     </library>
 </server>

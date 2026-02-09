@@ -1,18 +1,35 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
+import jakarta.persistence.*;
 import unl.edu.cc.workunity.exception.InvalidFile;
 
+import java.io.Serializable;
 import java.util.StringJoiner;
 
 /**
  * Clase abstracta para representar archivos adjuntos en tareas
  */
-public abstract class ArchivoAdjunto {
-    protected float tamanio;
-    protected byte[] contenido;
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class ArchivoAdjunto implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private float tamanio;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] contenido;
 
     // Tamaño máximo permitido para el archivo 20 MB convertidos a bytes
     private static final int TamanioMaximoBytes = 20 * 1024 * 1024;
+
+    public ArchivoAdjunto() {
+    }
 
     public ArchivoAdjunto(byte[] contenido) {
         validarTamanio(contenido);
@@ -51,4 +68,3 @@ public abstract class ArchivoAdjunto {
                 .toString();
     }
 }
-

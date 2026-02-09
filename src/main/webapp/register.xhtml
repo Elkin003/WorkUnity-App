@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+<ui:composition template="WEB-INF/template/base.xhtml">
+    <ui:define name="title-view">
+        WorkUnity - Register
+    </ui:define>
+    <ui:define name="head">
+        <h:outputStylesheet library="styles" name="register.css"/>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div class="register-container">
+                <div class="register-card">
+
+                    <!-- Título -->
+                    <div class="register-title">Crear Cuenta</div>
+
+                    <!-- Mensajes -->
+                    <p:messages showDetail="true" skipDetailIfEqualsSummary="true">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <div class="register-fields">
+
+                        <!-- Nombre -->
+                        <p:outputLabel for="firstName" value="Nombre"/>
+                        <p:inputText id="firstName" value="#{registerController.firstName}" label="Nombre"
+                            required="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <p:clientValidator/>
+                        </p:inputText>
+                        <p:message for="firstName" showDetail="true" showSummary="true"/>
+
+                        <!-- Apellido -->
+                        <p:outputLabel for="lastName" value="Apellido"/>
+                        <p:inputText id="lastName" value="#{registerController.lastName}" label="Apellido"
+                            required="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <p:clientValidator/>
+                        </p:inputText>
+                        <p:message for="lastName" showDetail="true" showSummary="true"/>
+
+                        <!-- Teléfono -->
+                        <p:outputLabel for="phone" value="Teléfono"/>
+                        <p:inputText id="phone" value="#{registerController.phone}" label="Teléfono" required="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <p:clientValidator/>
+                        </p:inputText>
+                        <p:message for="phone" showDetail="true" showSummary="true"/>
+
+                        <!-- Email -->
+                        <p:outputLabel for="email" value="Email"/>
+                        <p:inputText id="email" value="#{registerController.email}" label="Email" required="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <p:clientValidator/>
+                        </p:inputText>
+                        <p:message for="email" showDetail="true" showSummary="true"/>
+
+                        <!-- Username -->
+                        <p:outputLabel for="username" value="Usuario"/>
+                        <p:inputText id="username" value="#{registerController.username}" label="Usuario"
+                            required="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <f:validateLength minimum="5"/>
+                            <p:clientValidator/>
+                        </p:inputText>
+                        <p:message for="username" showDetail="true" showSummary="true"/>
+
+                        <!-- Contraseña -->
+                        <p:outputLabel for="password" value="Contraseña"/>
+                        <p:password id="password" value="#{registerController.password}" required="true"
+                            label="Contraseña" toggleMask="true" redisplay="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <f:validateLength minimum="8"/>
+                            <p:clientValidator/>
+                        </p:password>
+                        <p:message for="password" showDetail="true" showSummary="true"/>
+
+                        <!-- Confirmar Contraseña -->
+                        <p:outputLabel for="confirmPassword" value="Confirmar Contraseña"/>
+                        <p:password id="confirmPassword" value="#{registerController.confirmPassword}" required="true"
+                            label="Confirmar Contraseña" toggleMask="true" redisplay="true"
+                            class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                            <f:validateLength minimum="8"/>
+                            <p:clientValidator/>
+                        </p:password>
+                        <p:message for="confirmPassword" showDetail="true" showSummary="true"/>
+
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="register-actions">
+                        <p:commandButton value="Registrarse" action="#{registerController.register}"
+                            icon="pi pi-user-plus" validateClient="true" styleClass="register-button" update="@form" />
+
+                        <p:commandButton value="Cancelar" action="index.xhtml?faces-redirect=true" immediate="true"
+                            icon="pi pi-times" styleClass="ui-button-secondary cancel-button"/>
+                    </div>
+
+                    <!-- Link a Login -->
+                    <div class="register-login-link">
+                        ¿Ya tienes cuenta?
+                        <h:link outcome="login" value="Inicia sesión aquí"/>
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+    <ui:define name="footer">
+        <ui:include src="WEB-INF/template/fragments/footer.xhtml"/>
+    </ui:define>
+</ui:composition>
+</html>

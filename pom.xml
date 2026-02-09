@@ -22,6 +22,14 @@
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <war-plugin.version>3.4.0</war-plugin.version>
         <liberty-plugin.version>3.10.3</liberty-plugin.version>
+
+        <driver.jdbc.dir>${server.config.dir}/lib/global</driver.jdbc.dir>
+        <db.server.name>localhost</db.server.name>
+        <db.port.number>5432</db.port.number>
+
+        <liberty.bootstrap.driver.jdbc.dir>${driver.jdbc.dir}</liberty.bootstrap.driver.jdbc.dir>
+        <liberty.bootstrap.db.server.name>${db.server.name}</liberty.bootstrap.db.server.name>
+        <liberty.bootstrap.db.port.number>${db.port.number}</liberty.bootstrap.db.port.number>
     </properties>
 
     <dependencies>
@@ -72,11 +80,48 @@
                 <version>${war-plugin.version}</version>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <type>jar</type>
+                            <overWrite>true</overWrite>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                </configuration>
+            </plugin>
+
             <!-- Execute 'mvn clean package liberty:run' to run the application.  -->
             <plugin>
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>${liberty-plugin.version}</version>
+                <configuration>
+                    <copyDependencies>
+                        <dependencyGroup>
+                            <location>lib/global</location>
+                            <dependency>
+                                <groupId>org.postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                            </dependency>
+                        </dependencyGroup>
+                    </copyDependencies>
+                </configuration>
             </plugin>
         </plugins>
     </build>

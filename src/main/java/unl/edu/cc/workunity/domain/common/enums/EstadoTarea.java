@@ -1,4 +1,4 @@
-package unl.edu.cc.workunity.domain.enums;
+package unl.edu.cc.workunity.domain.common.enums;
 
 /**
  * Enum que define los estados posibles de una Tarea

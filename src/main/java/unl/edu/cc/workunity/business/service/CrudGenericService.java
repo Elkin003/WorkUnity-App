@@ -1,4 +1,4 @@
-package unl.edu.cc.workunity.business.service.common;
+package unl.edu.cc.workunity.business.service;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 /**
  * Basado en el servicio descrito por Adam Bien
  * http://www.adam-bien.com/roller/abien/entry/generic_crud_service_aka_dao
+ *
  * @author wduck (wilman at loxageek dot com)
  */
 
@@ -57,8 +58,8 @@ public class CrudGenericService {
      * @param type
      * @param id
      * @param nameNodeGraphMaps
-     * @param typeGraph is javax.persistence.loadgraph for relashionShip
-     * ManyToOne or javax.persistence.fetchgraph for relashionShip OneToMany
+     * @param typeGraph         is javax.persistence.loadgraph for relashionShip
+     *                          ManyToOne or javax.persistence.fetchgraph for relashionShip OneToMany
      * @return
      */
     public <T> T findWithEntityGraph(Class<T> type, Object id, String nameNodeGraphMaps, String typeGraph) {
@@ -113,12 +114,12 @@ public class CrudGenericService {
      * @param <T>
      * @param namedQueryName
      * @param nameNodeGraphMaps
-     * @param typeGraph is javax.persistence.loadgraph for relashionShip
-     * ManyToOne or javax.persistence.fetchgraph for relashionShip OneToMany
+     * @param typeGraph         is javax.persistence.loadgraph for relashionShip
+     *                          ManyToOne or javax.persistence.fetchgraph for relashionShip OneToMany
      * @return List T
      */
     @SuppressWarnings("unchecked")
-    public <T> List<T> findWithEntityGraph(String namedQueryName ,String nameNodeGraphMaps, String typeGraph) {
+    public <T> List<T> findWithEntityGraph(String namedQueryName, String nameNodeGraphMaps, String typeGraph) {
         EntityGraph graph = this.em.getEntityGraph(nameNodeGraphMaps);
         Query query = this.em.createNamedQuery(namedQueryName);
         query.setHint(typeGraph, graph);
@@ -219,45 +220,45 @@ public class CrudGenericService {
         for (Map.Entry<String, Object> entry : rawParameters) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
-        query.setFirstResult(page*pageSize);
+        query.setFirstResult(page * pageSize);
         if (pageSize > 0) {
             query.setMaxResults(pageSize);
         }
     }
 
-    public CriteriaBuilder getCriteriaBuilder(){
+    public CriteriaBuilder getCriteriaBuilder() {
         return em.getCriteriaBuilder();
     }
 
-    public <T extends Object> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery){
+    public <T extends Object> TypedQuery<T> createQuery(CriteriaQuery<T> criteriaQuery) {
         return em.createQuery(criteriaQuery);
     }
 
-    public <T extends Object> Query createQuery(CriteriaDelete<T> criteriaDelete){
+    public <T extends Object> Query createQuery(CriteriaDelete<T> criteriaDelete) {
         return em.createQuery(criteriaDelete);
     }
 
-    public <T extends Object> Query createQuery(CriteriaUpdate<T> criteriaUpdate){
+    public <T extends Object> Query createQuery(CriteriaUpdate<T> criteriaUpdate) {
         return em.createQuery(criteriaUpdate);
     }
 
-    public Query createNativeQuery(String nativeQuery){
+    public Query createNativeQuery(String nativeQuery) {
         return em.createNativeQuery(nativeQuery);
     }
 
-    public Query createNativeQuery(String nativeQuery, Class resultClass){
+    public Query createNativeQuery(String nativeQuery, Class resultClass) {
         return em.createNativeQuery(nativeQuery, resultClass);
     }
 
-    public Query createNativeQuery(String nativeQuery, String resultSetMapping){
+    public Query createNativeQuery(String nativeQuery, String resultSetMapping) {
         return em.createNativeQuery(nativeQuery, resultSetMapping);
     }
 
-    public EntityGraph getEntityGraph(String nameNodeGraphMaps){
+    public EntityGraph getEntityGraph(String nameNodeGraphMaps) {
         return this.em.getEntityGraph(nameNodeGraphMaps);
     }
 
-    public <T> List<EntityGraph<? super T>> getEntityGraph(Class<T> entityClass){
+    public <T> List<EntityGraph<? super T>> getEntityGraph(Class<T> entityClass) {
         return this.em.getEntityGraphs(entityClass);
     }
 
@@ -285,7 +286,7 @@ public class CrudGenericService {
         return (T) findSingleResultOrNullWithQuery(query);
     }
 
-    public Object findSingleResultOrNullWithQuery(Query query) throws NonUniqueResultException{
+    public Object findSingleResultOrNullWithQuery(Query query) throws NonUniqueResultException {
         List results = query.getResultList();
         if (results.isEmpty()) return null;
         else if (results.size() == 1) return results.get(0);
@@ -298,4 +299,3 @@ public class CrudGenericService {
     }
 
 }
-

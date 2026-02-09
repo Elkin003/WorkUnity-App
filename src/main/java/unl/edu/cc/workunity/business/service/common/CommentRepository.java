@@ -1,36 +1,24 @@
-package unl.edu.cc.workunity.business.service.security;
+package unl.edu.cc.workunity.business.service.common;
 
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import unl.edu.cc.workunity.business.service.common.CrudGenericService;
-import unl.edu.cc.workunity.domain.Comentario;
-import unl.edu.cc.workunity.domain.Tarea;
+import unl.edu.cc.workunity.business.service.CrudGenericService;
+import unl.edu.cc.workunity.domain.common.Comentario;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
-/**
- * Repositorio en memoria para la gestión de Comentarios
- */
 @Stateless
 public class CommentRepository {
+
     @Inject
     private CrudGenericService crudService;
-    @PersistenceContext
-    private EntityManager em;
-
-
-
 
     public Comentario save(Comentario comentario) {
         if (comentario.getId() == null) {
-            em.persist(comentario);
-            return comentario;
+            return crudService.create(comentario);
         } else {
-            return em.merge(comentario);
+            return crudService.update(comentario);
         }
     }
 
@@ -46,21 +34,12 @@ public class CommentRepository {
         return crudService.findWithNativeQuery("SELECT * FROM comentario", Comentario.class);
     }
 
-    // Versión con objeto Tarea
-    public List<Comentario> findByTask(Tarea tarea) {
-        String query = "SELECT * FROM comentario WHERE tarea_id = " + tarea.getId();
-        return crudService.findWithNativeQuery(query, Comentario.class);
-    }
-
-    // Versión con ID de Tarea (NUEVO)
     public List<Comentario> findByTask(Long tareaId) {
         String query = "SELECT * FROM comentario WHERE tarea_id = " + tareaId;
         return crudService.findWithNativeQuery(query, Comentario.class);
     }
 
     public void delete(Long id) throws EntityNotFoundException {
-        Comentario comentario = find(id);
-        em.remove(em.merge(comentario));
+        crudService.delete(Comentario.class, id);
     }
-
 }

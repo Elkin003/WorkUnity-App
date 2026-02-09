@@ -1,121 +1,175 @@
-
-body {
-    background-color: #020617;
-    color: #cbd5e1;
+.task-detail-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
     font-family: 'Courier New', Courier, monospace;
+    padding-bottom: 3rem;
 }
 
-input,
-textarea,
-select {
-    background-color: rgba(0, 5, 17, 0.85);
-    color: #e5e7eb;
+.back-button {
+    margin-bottom: 1.5rem;
+    background-color: transparent !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+.back-button:hover {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    border-color: #fb6b39 !important;
+}
+
+.task-info-header {
+    background-color: #00081a;
     border: 1px solid #1e293b;
     border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    border-left: 4px solid #1f4fd8;
 }
 
-input::placeholder,
-textarea::placeholder {
-    color: #64748b;
+.task-info-header h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-label {
+.task-info-header p {
     color: #cbd5e1;
-    font-weight: 500;
+    margin: 0.5rem 0;
+    line-height: 1.6;
 }
 
-.ui-widget-content {
-    background: transparent !important;
-    color: #cbd5e1 !important;
-    border: none !important;
+.task-info-header strong {
+    color: #fb6b39;
 }
 
-.ui-dialog {
-    background: #020617 !important;
-    border-radius: 14px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(31, 79, 216, 0.3);
+.actions-section {
+    background-color: #000511;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.ui-dialog-titlebar {
-    background: #020617 !important;
-    border-bottom: 1px solid #1e293b !important;
-}
-
-.ui-dialog-title {
-    color: #e5e7eb !important;
-    font-weight: 900;
+.actions-section h3 {
+    margin-top: 0;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 0.5rem;
+    display: inline-block;
 }
 
-.ui-dialog-titlebar-close {
-    filter: invert(1);
+.actions-section .ui-button {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.ui-dialog .ui-dialog-content {
-    background: #020617 !important;
-    padding: 2rem !important;
+.comments-section {
+    margin-top: 2rem;
 }
 
-.ui-dialog form,
-.ui-dialog table,
-.ui-dialog tbody,
-.ui-dialog tr,
-.ui-dialog td {
-    background: transparent !important;
-    border: none !important;
-    color: #cbd5e1 !important;
+.comments-section h3 {
+    color: #fb6b39;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 0.5rem;
 }
 
-.ui-dialog input,
-.ui-dialog textarea,
-.ui-dialog select {
-    width: 100%;
-    background: rgba(0, 5, 17, 0.9) !important;
-    border: 1px solid #1e293b !important;
-    color: #e5e7eb !important;
+.comments-list {
+    margin-bottom: 2rem;
 }
 
-.ui-dialog-buttonpane {
-    background: transparent !important;
-    border-top: none !important;
-    padding-top: 1.5rem;
+.comment-item {
+    background-color: #00081a;
+    border: 1px solid #1e293b;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    border-left: 3px solid #334155;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: #1f4fd8;
-    box-shadow: 0 0 0 2px rgba(31, 79, 216, 0.25);
+.comment-author {
+    color: #1f4fd8;
+    font-weight: bold;
+    font-size: 0.95rem;
 }
 
-.ui-button {
-    border-radius: 8px !important;
+.comment-date {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.comment-text {
+    color: #e2e8f0;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+}
+
+.new-comment-box {
+    background-color: #00081a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+}
+
+.new-comment-box h4 {
+    margin-top: 0;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.comment-textarea {
+    width: 100% !important;
+    background-color: #000511 !important;
+    color: #ffffff !important;
+    border: 1px solid #334155 !important;
+    padding: 0.75rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 4px !important;
+}
+
+.comment-textarea:focus {
+    border-color: #fb6b39 !important;
+    box-shadow: 0 0 0 2px rgba(251, 107, 57, 0.2) !important;
+}
+
+/* Badge Styles - Reuse consistent styles */
+.ui-badge {
+    border-radius: 4px !important;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 0.75rem !important;
 }
 
-.ui-button.ui-button-secondary {
-    background: #1e293b !important;
-    color: #e5e7eb !important;
-    border: none !important;
+.ui-badge-success {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+    color: #4ade80 !important;
+    border: 1px solid #22c55e;
 }
 
-.ui-button.ui-button-secondary:hover {
-    background: #334155 !important;
+.ui-badge-danger {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+    border: 1px solid #ef4444;
 }
 
-.ui-button.ui-button-success {
-    background: linear-gradient(135deg, #22c55e, #16a34a) !important;
-    color: #ffffff !important;
-    border: none !important;
-    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+.ui-badge-info {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    color: #60a5fa !important;
+    border: 1px solid #3b82f6;
 }
 
-.ui-button.ui-button-success:hover {
-    box-shadow: 0 6px 25px rgba(34, 197, 94, 0.6);
-    transform: translateY(-1px);
+.ui-badge-warning {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    color: #fbbf24 !important;
+    border: 1px solid #f59e0b;
 }

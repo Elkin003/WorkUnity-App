@@ -1,13 +1,21 @@
-package unl.edu.cc.workunity.domain.files;
+package unl.edu.cc.workunity.domain.common.files;
 
-import unl.edu.cc.workunity.domain.ArchivoAdjunto;
-import unl.edu.cc.workunity.domain.enums.TipoImagen;
+import jakarta.persistence.*;
+import unl.edu.cc.workunity.domain.common.ArchivoAdjunto;
+import unl.edu.cc.workunity.domain.common.enums.TipoImagen;
 
 /**
  * Clase que representa una imagen adjunta a una tarea
  */
+@Entity
 public class Imagen extends ArchivoAdjunto {
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private TipoImagen tipo;
+
+    public Imagen() {
+    }
 
     public Imagen(byte[] contenido, TipoImagen tipo) {
         super(contenido);

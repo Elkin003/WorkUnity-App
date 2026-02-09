@@ -1,19 +1,17 @@
 package unl.edu.cc.workunity.view;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import unl.edu.cc.workunity.business.WorkUnityFacade;
-import unl.edu.cc.workunity.domain.Entidad;
-import unl.edu.cc.workunity.domain.Integrante;
-import unl.edu.cc.workunity.domain.Proyecto;
-import unl.edu.cc.workunity.domain.Tarea;
-import unl.edu.cc.workunity.domain.*;
-import unl.edu.cc.workunity.domain.enums.Rol;
+import unl.edu.cc.workunity.domain.common.Entidad;
+import unl.edu.cc.workunity.domain.common.Integrante;
+import unl.edu.cc.workunity.domain.common.Proyecto;
+import unl.edu.cc.workunity.domain.common.Tarea;
+import unl.edu.cc.workunity.domain.common.enums.Rol;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
+import unl.edu.cc.workunity.faces.FacesUtil;
 import unl.edu.cc.workunity.view.security.UserSession;
 
 import java.io.Serializable;
@@ -21,17 +19,14 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
+import jakarta.faces.context.FacesContext;
+import java.io.IOException;
 
-/**
- * Controller para la vista de detalles de un proyecto
- */
 @Named
 @ViewScoped
 public class ProjectDetailController implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static Logger logger = Logger.getLogger(ProjectDetailController.class.getName());
 
     @Inject
     private WorkUnityFacade workUnityFacade;
@@ -39,16 +34,13 @@ public class ProjectDetailController implements Serializable {
     @Inject
     private UserSession userSession;
 
-    // Parámetro de URL
     private Long projectId;
 
-    // Datos del proyecto
     private Proyecto project;
     private List<Tarea> tasks;
     private List<Integrante> members;
     private Integrante currentUserIntegrante;
 
-    // Campos para modal de nueva tarea
     private String newTaskTitle;
     private String newTaskDescription;
     private Date newTaskDeadline;
@@ -63,53 +55,58 @@ public class ProjectDetailController implements Serializable {
 
     private void loadProjectData() {
         try {
-            // Cargar proyecto
             project = workUnityFacade.findProject(projectId);
-
-            // Cargar tareas del proyecto
-            tasks = workUnityFacade.findTasksByProject(project);
-
-            // Cargar miembros del proyecto
-            members = workUnityFacade.findMembersByProject(project);
-
-            // Obtener integrante actual para validar permisos
             Entidad currentEntity = userSession.getUser().getEntidad();
-            try {
-                currentUserIntegrante = workUnityFacade.findIntegrantByProjectAndEntity(project, currentEntity);
-            } catch (EntityNotFoundException e) {
-                currentUserIntegrante = null;
-                logger.warning("Usuario actual no es miembro del proyecto");
+            currentUserIntegrante = workUnityFacade.findIntegrantByProjectAndEntity(project, currentEntity);
+
+            if (currentUserIntegrante == null) {
+                FacesUtil.addErrorMessageAndKeep("Error", "No tienes permiso para ver este proyecto.");
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("projects.xhtml");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                return;
             }
 
-            logger.info("Proyecto cargado: " + project.getNombre() + " con " + tasks.size() + " tareas y "
-                    + members.size() + " miembros");
+            tasks = workUnityFacade.findTasksByProject(project);
+            members = workUnityFacade.findMembersByProject(project);
 
         } catch (EntityNotFoundException e) {
-            logger.severe("Proyecto no encontrado: " + e.getMessage());
-            addErrorMessage("Proyecto no encontrado");
+            if (project == null) {
+                try {
+                    FacesUtil.addErrorMessageAndKeep("Error", "Proyecto no encontrado");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("projects.xhtml");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                try {
+                    FacesUtil.addErrorMessageAndKeep("Error", "No tienes permiso para ver este proyecto.");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("projects.xhtml");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
         } catch (Exception e) {
-            logger.severe("Error cargando datos del proyecto: " + e.getMessage());
-            addErrorMessage("Error al cargar el proyecto: " + e.getMessage());
+            FacesUtil.addErrorMessage("Error", "Error al cargar el proyecto: " + e.getMessage());
         }
     }
 
     public void createTask() {
         try {
             if (currentUserIntegrante == null || currentUserIntegrante.getRol() != Rol.LIDER) {
-                addErrorMessage("Solo el líder puede crear tareas");
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede crear tareas");
                 return;
             }
 
-            // Convertir Date a LocalDate
             LocalDate fechaLimite = newTaskDeadline.toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
 
-            // Crear tarea usando el facade
             Tarea newTask = workUnityFacade.createTask(currentUserIntegrante,
                     newTaskTitle, newTaskDescription, fechaLimite);
 
-            // Asignar si se seleccionó un integrante
             if (selectedIntegranteId != null) {
                 Integrante asignado = members.stream()
                         .filter(i -> i.getId().equals(selectedIntegranteId))
@@ -121,26 +118,23 @@ public class ProjectDetailController implements Serializable {
                 }
             }
 
-            // Recargar datos
             loadProjectData();
 
-            addSuccessMessage("Tarea creada exitosamente");
+            FacesUtil.addSuccessMessage("Éxito", "Tarea creada exitosamente");
 
-            // Limpiar campos del modal
             clearNewTaskFields();
 
         } catch (Exception e) {
-            logger.severe("Error creando tarea: " + e.getMessage());
-            addErrorMessage("Error al crear tarea: " + e.getMessage());
+            FacesUtil.addErrorMessage("Error", "Error al crear tarea: " + e.getMessage());
         }
     }
 
     public String viewTask(Tarea tarea) {
-        return "tarea-detalle?faces-redirect=true&taskId=" + tarea.getId();
+        return "task-details?faces-redirect=true&taskId=" + tarea.getId();
     }
 
     public String goBackToProjects() {
-        return "proyectos?faces-redirect=true";
+        return "projects?faces-redirect=true";
     }
 
     public boolean isCurrentUserLeader() {
@@ -154,18 +148,6 @@ public class ProjectDetailController implements Serializable {
         newTaskDeadline = null;
         selectedIntegranteId = null;
     }
-
-    private void addSuccessMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", message));
-    }
-
-    private void addErrorMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", message));
-    }
-
-    // Getters y Setters
 
     public Long getProjectId() {
         return projectId;
@@ -235,4 +217,3 @@ public class ProjectDetailController implements Serializable {
         return currentUserIntegrante;
     }
 }
-

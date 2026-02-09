@@ -1,6 +1,5 @@
 package unl.edu.cc.workunity.view;
 
-import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
@@ -12,15 +11,13 @@ import jakarta.validation.constraints.Size;
 import unl.edu.cc.workunity.business.SecurityFacade;
 import unl.edu.cc.workunity.domain.security.User;
 import unl.edu.cc.workunity.exception.CredentialInvalidException;
+import unl.edu.cc.workunity.faces.FacesUtil;
 import unl.edu.cc.workunity.view.security.UserPrincipalDTO;
 import unl.edu.cc.workunity.view.security.UserSession;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-/**
- * Controller para autenticación de usuarios
- */
 @Named
 @ViewScoped
 public class AuthenticationController implements Serializable {
@@ -30,7 +27,7 @@ public class AuthenticationController implements Serializable {
 
     @NotNull
     @NotEmpty
-    @Size(min = 5, message = "Nombre de usuario muy corto")
+    @Size(min = 3, message = "Nombre de usuario muy corto")
     private String username;
 
     @NotNull
@@ -47,27 +44,30 @@ public class AuthenticationController implements Serializable {
     public String login() {
         logger.info("Login attempt for user: " + username);
 
+        if (username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            FacesUtil.addErrorMessage("Error", "Credenciales incorrectas");
+            return null;
+        }
+
         try {
             User user = securityFacade.authenticate(username, password);
             setHttpSession(user);
-            addSuccessMessage("Bienvenido " + user.getName());
+            FacesUtil.addSuccessMessageAndKeep("Bienvenido", user.getEntidad().getNombre());
             userSession.postLogin(user);
 
-            return "proyectos?faces-redirect=true";
+            return "projects?faces-redirect=true";
 
         } catch (CredentialInvalidException e) {
-            addErrorMessage("Credenciales incorrectas");
+            FacesUtil.addErrorMessage("Error", "Credenciales incorrectas");
             return null;
         } catch (Exception e) {
             logger.severe("Error during login: " + e.getMessage());
-            addErrorMessage("Error al iniciar sesión: " + e.getMessage());
+            FacesUtil.addErrorMessage("Error", "Credenciales incorrectas");
             return null;
         }
     }
 
-    /**
-     * Establece la sesión de usuario en el contexto HTTP
-     */
     private void setHttpSession(User user) {
         FacesContext context = FacesContext.getCurrentInstance();
         UserPrincipalDTO userPrincipal = new UserPrincipalDTO(user);
@@ -77,23 +77,10 @@ public class AuthenticationController implements Serializable {
     public String logout() throws ServletException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().invalidateSession();
-        addSuccessMessage("Hasta pronto");
+        FacesUtil.addSuccessMessageAndKeep("Hasta pronto", "");
         ((jakarta.servlet.http.HttpServletRequest) facesContext.getExternalContext().getRequest()).logout();
         return "index?faces-redirect=true";
     }
-
-    private void addSuccessMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", message));
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-    }
-
-    private void addErrorMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", message));
-    }
-
-    // Getters y Setters
 
     public String getUsername() {
         return username;
@@ -111,4 +98,3 @@ public class AuthenticationController implements Serializable {
         this.password = password;
     }
 }
-

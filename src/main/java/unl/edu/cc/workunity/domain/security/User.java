@@ -1,26 +1,29 @@
 package unl.edu.cc.workunity.domain.security;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import unl.edu.cc.workunity.domain.Entidad;
+import unl.edu.cc.workunity.domain.common.Entidad;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Representa las credenciales de autenticación de un usuario
- */
+@Entity
+@Table(name = "user_")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     @NotEmpty
-    @Size(min = 5)
+    @Size(min = 3)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     @NotNull
@@ -28,9 +31,10 @@ public class User implements Serializable {
     private String password;
 
     @Email
+    @Column(unique = true, length = 50)
     private String email;
 
-    // Relación con el perfil del usuario
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Entidad entidad;
 
     public User() {
@@ -41,8 +45,6 @@ public class User implements Serializable {
         this.setName(name);
         this.setPassword(password);
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;

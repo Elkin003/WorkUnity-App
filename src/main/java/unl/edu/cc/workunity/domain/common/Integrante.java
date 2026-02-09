@@ -1,9 +1,12 @@
-package unl.edu.cc.workunity.domain;
+package unl.edu.cc.workunity.domain.common;
 
-import unl.edu.cc.workunity.domain.enums.Rol;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import unl.edu.cc.workunity.domain.common.enums.Rol;
 import unl.edu.cc.workunity.exception.ExistingIntegrantException;
 import unl.edu.cc.workunity.exception.UnauthorizedAccessException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +17,47 @@ import java.util.Objects;
  *
  * @author Leonel Lima (LMess)
  */
-public class Integrante {
+@Entity
+@Table(name = "integrante", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "entidad_id", "proyecto_id" })
+})
+public class Integrante implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private Rol rol;
+
+    @Column(nullable = false)
+    private LocalDate fechaUnion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "entidad_id", nullable = false)
+    @NotNull
     private Entidad entidad;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proyecto_id", nullable = false)
+    @NotNull
     private Proyecto proyecto;
+
+    @OneToMany(mappedBy = "integranteAsignado", cascade = CascadeType.ALL)
     private List<Tarea> tareas;
+
+    public Integrante() {
+    }
 
     public Integrante(Rol rol, Entidad entidad, Proyecto proyecto) {
         this.rol = rol;
         this.entidad = entidad;
         this.proyecto = proyecto;
+        this.fechaUnion = LocalDate.now();
     }
 
     private void validarLider() {
@@ -67,8 +100,6 @@ public class Integrante {
         integranteAsignado.getTareas();
         integranteAsignado.tareas.add(tarea);
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -133,10 +164,6 @@ public class Integrante {
         return "Integrante{" +
                 "id=" + id +
                 ", rol=" + rol +
-                ", entidad=" + (entidad != null ? entidad.getNombre() : "null") +
-                ", proyecto=" + (proyecto != null ? proyecto.getNombre() : "null") +
-                ", tareas=" + getTareas().size() +
                 '}';
     }
 }
-

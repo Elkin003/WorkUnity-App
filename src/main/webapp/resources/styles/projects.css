@@ -1,299 +1,180 @@
-:root {
-    --primary: #1f4fd8;
-    --primary-dark: #15359a;
-    --accent: #fb6b39;
-    --success: #22c55e;
-
-    --bg-dark: #0b1220;
-    --bg-dark-soft: #0f1a2b;
-
-    --surface-card: #111827;
-    --surface-inner: #1f2937;
-
-    --text-main: #ebeff6;
-    --text-muted: #94a3b8;
-
-    --border-dark: #334155;
-}
-
-.proyectos-container {
-    padding: 2rem;
-    max-width: 1400px;
+.projects-container {
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    background: var(--bg-dark);
     font-family: 'Courier New', Courier, monospace;
 }
 
-.proyectos-header {
+.projects-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid #1e293b;
 }
 
-.proyectos-title {
-    color: var(--accent);
+.projects-title {
     font-size: 2rem;
     font-weight: 900;
+    color: #fb6b39;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 15px rgba(251, 107, 57, 0.3);
+    margin: 0;
+    text-shadow: 0 0 10px rgba(251, 107, 57, 0.2);
 }
 
-.proyecto-card {
-    padding: 2rem;
-    margin: 1rem;
-    background: #111827;
-    border: 1px solid #1f2937;
-    border-radius: 14px;
-    transition: all 0.25s ease;
-}
-
-.proyecto-card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.proyecto-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--primary);
-    box-shadow: 0 10px 30px rgba(31,79,216,0.25);
-}
-
-.proyecto-card:hover::before {
-    opacity: 1;
-}
-
-.proyecto-card h3 {
-    color: #fdfbfb;
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: .5rem;
-}
-
-
-.proyecto-card > p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    min-height: 60px;
-}
-
-.proyecto-info-box {
-    background: #1f2937;
-    border: 1px solid #334155;
-    border-radius: 10px;
-    padding: 1rem;
-}
-
-
-.proyecto-info-box p {
-    color: var(--text-main);
-    font-size: 0.9rem;
-    display: flex;
-    justify-content: space-between;
-}
-
-.proyecto-info-box strong {
-    color: var(--accent);
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-}
-
-.btn-ver-proyecto {
-    background: var(--primary) !important;
+/* Customizing PrimeFaces DataView */
+.ui-dataview .ui-dataview-header,
+.ui-dataview .ui-dataview-content,
+.ui-dataview .ui-dataview-footer {
+    background: transparent !important;
     border: none !important;
-    font-weight: 700;
-}
-
-.btn-ver-proyecto:hover {
-    box-shadow:
-            0 0 20px rgba(31, 79, 216, 0.6),
-            0 0 40px rgba(31, 79, 216, 0.4);
-}
-
-.ui-dialog {
-    background: linear-gradient(
-            135deg,
-            var(--bg-dark),
-            var(--bg-dark-soft)
-    ) !important;
-    border: 1px solid rgba(31, 79, 216, 0.4) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85) !important;
-}
-
-.ui-dialog-titlebar {
-    background: var(--bg-dark) !important;
-    border-bottom: 1px solid rgba(31, 79, 216, 0.3) !important;
-    color: var(--text-main) !important;
-    padding: 1rem 1.25rem !important;
-}
-
-.ui-dialog-title {
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.ui-dialog-titlebar-close {
-    color: var(--text-muted) !important;
-}
-
-.ui-dialog-titlebar-close:hover {
-    color: var(--accent) !important;
-}
-
-.ui-dialog-content {
-    background: linear-gradient(
-            135deg,
-            var(--bg-dark),
-            var(--bg-dark-soft)
-    ) !important;
-    color: var(--text-main) !important;
     padding: 0 !important;
 }
 
-.dialog-proyecto {
+.ui-dataview-grid-item {
+    padding: 0.5rem;
+    width: 33.333%; /* 3 columns by default */
+}
+
+@media (max-width: 900px) {
+    .ui-dataview-grid-item {
+        width: 50%;
+    }
+}
+
+@media (max-width: 600px) {
+    .ui-dataview-grid-item {
+        width: 100%;
+    }
+}
+
+/* Project Card Styling */
+.project-card {
+    background-color: #00081a;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
     padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.dialog-proyecto .ui-panelgrid {
-    background: linear-gradient(
-            135deg,
-            var(--bg-dark),
-            var(--bg-dark-soft)
-    ) !important;
-    border: 1px solid rgba(31, 79, 216, 0.35);
-    border-radius: 10px;
-    padding: 1.5rem;
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+    border-color: #1f4fd8;
 }
 
-.dialog-proyecto label,
-.dialog-proyecto .ui-outputlabel {
-    color: var(--text-main) !important;
-    font-weight: 600;
+.project-card h3 {
+    color: #ffffff;
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 0.5rem;
 }
 
-.dialog-proyecto .ui-inputfield,
-.dialog-proyecto textarea {
-    background: var(--bg-dark) !important;
-    color: #ece5e5 !important;
-    border: 1px solid var(--border-dark) !important;
-    border-radius: 6px;
+.project-card p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
 }
 
-.dialog-proyecto .ui-inputfield:focus,
-.dialog-proyecto textarea:focus {
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 1px rgba(31, 79, 216, 0.6);
-    outline: none;
+.project-info-box {
+    background-color: #000511;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
 }
 
-.dialog-proyecto .ui-inputfield::placeholder,
-.dialog-proyecto textarea::placeholder {
-    color: var(--text-muted);
+.project-info-box p {
+    margin: 0.25rem 0;
+    color: #94a3b8;
 }
 
-.dialog-proyecto .ui-outputlabel-rfi {
-    color: #e11d48 !important;
-    font-weight: bold;
+.project-info-box strong {
+    color: #fb6b39;
 }
 
-.dialog-proyecto .ui-calendar input {
-    background: var(--bg-dark) !important;
-    color: #ffffff !important;
-}
-
-.dialog-proyecto .ui-datepicker-trigger {
-    background: var(--primary) !important;
-    border-radius: 6px;
-}
-
-.proyectos-container .ui-button-success {
-    background: var(--success) !important;
-    border: none !important;
-}
-
-.proyectos-container .ui-button-secondary {
-    background: #475569 !important;
-    border: none !important;
+/* Button Styling */
+.view-project-button {
+    width: 100%;
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
     color: white !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
 }
 
-.proyectos-container .ui-messages {
-    background: linear-gradient(
-            135deg,
-            var(--bg-dark),
-            var(--bg-dark-soft)
-    ) !important;
-    border: 1px solid rgba(31, 79, 216, 0.4) !important;
-    color: var(--text-main) !important;
-    border-radius: 10px;
-    padding: 1rem 1.25rem !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+.view-project-button:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
 }
 
-.proyectos-container .ui-messages-info {
-    background: linear-gradient(
-            135deg,
-            rgba(34, 197, 94, 0.15),
-            rgba(34, 197, 94, 0.05)
-    ) !important;
-    border-left: 4px solid var(--success) !important;
+/* Dialog Styles */
+.dialog-project {
+    padding: 1rem;
 }
 
-.proyectos-container .ui-messages-info-icon {
-    color: var(--success) !important;
+.ui-dialog {
+    background-color: #00081a !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75) !important;
+    color: #ffffff !important;
 }
 
-.proyectos-container .ui-messages-info-summary,
-.proyectos-container .ui-messages-info-detail {
-    color: var(--text-main) !important;
+.ui-dialog-titlebar {
+    background-color: #000511 !important;
+    border-bottom: 1px solid #1e293b !important;
+    color: #fb6b39 !important;
+    font-weight: bold !important;
+    text-transform: uppercase;
+}
+
+.ui-dialog-content {
+    background-color: #00081a !important;
+    color: #ffffff !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    background-color: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+.ui-outputlabel {
+    color: #cbd5e1 !important;
     font-weight: 600;
 }
 
-html,
-body {
-    background: #0b1220 !important;
-}
-
-#content,
-.layout-content,
-.ui-view,
-.main-content {
-    background: #0b1220 !important;
-}
-
-body .ui-widget {
-    background: #0b1220 !important;
-}
-
-.proyectos-container {
-    background: transparent !important;
-}
-
-.dlg-buttons .ui-button {
-    font-weight: 700 !important;
-    border-radius: 6px !important;
-    padding: 0.6rem 1.4rem !important;
-    text-transform: none !important;
-}
-
-.dlg-buttons .btn-cancelar.ui-button {
-    background: #475569 !important;
-    border: none !important;
+.ui-inputfield, .ui-inputtextarea {
+    background-color: #000511 !important;
     color: #ffffff !important;
+    border: 1px solid #334155 !important;
+    padding: 0.5rem !important;
 }
 
-.dlg-buttons .btn-crear.ui-button {
-    background: var(--success) !important;
-    border: none !important;
-    color: #ffffff !important;
+.ui-inputfield:focus, .ui-inputtextarea:focus {
+    border-color: #fb6b39 !important;
+    box-shadow: 0 0 0 2px rgba(251, 107, 57, 0.2) !important;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #1e293b;
+}
+
+.cancel-button {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
 }
