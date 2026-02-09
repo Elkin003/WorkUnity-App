@@ -23,7 +23,6 @@
     text-shadow: 0 0 10px rgba(251, 107, 57, 0.2);
 }
 
-/* Customizing PrimeFaces DataView */
 .ui-dataview .ui-dataview-header,
 .ui-dataview .ui-dataview-content,
 .ui-dataview .ui-dataview-footer {
@@ -34,7 +33,7 @@
 
 .ui-dataview-grid-item {
     padding: 0.5rem;
-    width: 33.333%; /* 3 columns by default */
+    width: 33.333%;
 }
 
 @media (max-width: 900px) {
@@ -49,9 +48,8 @@
     }
 }
 
-/* Project Card Styling */
 .project-card {
-    background-color: #00081a;
+    background-color: #0f1c35;
     border: 1px solid #1e293b;
     border-radius: 8px;
     padding: 1.5rem;
@@ -66,7 +64,7 @@
 .project-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
-    border-color: #1f4fd8;
+    border-color: #fb6b39;
 }
 
 .project-card h3 {
@@ -86,7 +84,7 @@
 }
 
 .project-info-box {
-    background-color: #000511;
+    background-color: #081020;
     border-radius: 4px;
     padding: 0.75rem;
     margin-bottom: 1rem;
@@ -99,38 +97,54 @@
 }
 
 .project-info-box strong {
-    color: #fb6b39;
+    color: #1f4fd8;
 }
 
-/* Button Styling */
+button.ui-button {
+    text-transform: uppercase !important;
+    font-weight: bold !important;
+    border-radius: 4px !important;
+}
+
 .view-project-button {
     width: 100%;
-    background-color: #1f4fd8 !important;
+    background-color: transparent !important;
     border: 1px solid #1f4fd8 !important;
-    color: white !important;
-    font-weight: bold !important;
-    text-transform: uppercase;
+    color: #1f4fd8 !important;
 }
 
 .view-project-button:hover {
-    background-color: #15359a !important;
-    border-color: #15359a !important;
+    background-color: rgba(31, 79, 216, 0.1) !important;
+    box-shadow: 0 0 10px rgba(31, 79, 216, 0.2) !important;
 }
 
-/* Dialog Styles */
+.ui-button-success,
+.create-button-orange {
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-success:hover,
+.create-button-orange:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
+    box-shadow: 0 0 10px rgba(31, 79, 216, 0.4);
+}
+
 .dialog-project {
     padding: 1rem;
 }
 
 .ui-dialog {
-    background-color: #00081a !important;
+    background-color: #0f1c35 !important;
     border: 1px solid #1e293b !important;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75) !important;
     color: #ffffff !important;
 }
 
 .ui-dialog-titlebar {
-    background-color: #000511 !important;
+    background-color: #081020 !important;
     border-bottom: 1px solid #1e293b !important;
     color: #fb6b39 !important;
     font-weight: bold !important;
@@ -138,7 +152,7 @@
 }
 
 .ui-dialog-content {
-    background-color: #00081a !important;
+    background-color: #0f1c35 !important;
     color: #ffffff !important;
 }
 
@@ -146,23 +160,51 @@
     background-color: transparent !important;
     border: none !important;
     color: #ffffff !important;
+    padding: 12px 10px !important;
 }
 
-.ui-outputlabel {
-    color: #cbd5e1 !important;
-    font-weight: 600;
-}
 
-.ui-inputfield, .ui-inputtextarea {
-    background-color: #000511 !important;
+.ui-inputfield,
+.ui-inputtextarea,
+.ui-calendar input,
+.ui-datepicker input {
+    background-color: #081020 !important;
     color: #ffffff !important;
     border: 1px solid #334155 !important;
     padding: 0.5rem !important;
+    box-sizing: border-box !important;
+    flex: 1;
+    width: 100% !important;
+    /* Fallback */
+    width: auto !important;
+    min-width: 0;
+    height: 42px !important;
+    line-height: normal !important;
+    display: inline-flex !important;
+    align-items: center !important;
 }
 
-.ui-inputfield:focus, .ui-inputtextarea:focus {
-    border-color: #fb6b39 !important;
-    box-shadow: 0 0 0 2px rgba(251, 107, 57, 0.2) !important;
+.ui-inputtextarea {
+    height: auto !important;
+    display: block !important;
+    line-height: 1.5 !important;
+}
+
+.ui-datepicker-trigger,
+.ui-calendar-button {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
+    color: #ffffff !important;
+    border-left: none !important;
+    height: auto !important;
+}
+
+.ui-inputfield:focus,
+.ui-inputtextarea:focus,
+.ui-calendar input:focus,
+.ui-datepicker input:focus {
+    border-color: #1f4fd8 !important;
+    box-shadow: 0 0 0 2px rgba(31, 79, 216, 0.2) !important;
 }
 
 .dialog-actions {
@@ -172,9 +214,14 @@
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid #1e293b;
+    padding-top: 1rem;
 }
 
 .cancel-button {
     background-color: #334155 !important;
     border: 1px solid #334155 !important;
+}
+
+.cancel-button:hover {
+    background-color: #475569 !important;
 }

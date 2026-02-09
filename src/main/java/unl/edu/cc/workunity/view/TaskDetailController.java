@@ -38,6 +38,10 @@ public class TaskDetailController implements Serializable {
     private List<Comentario> comments;
     private Integrante currentUserIntegrante;
 
+    private String editTaskTitle;
+    private String editTaskDescription;
+    private java.util.Date editTaskDeadline;
+
     private String newCommentText;
 
     @PostConstruct
@@ -109,6 +113,15 @@ public class TaskDetailController implements Serializable {
 
     public void deliverTask() {
         try {
+            if (newCommentText != null && !newCommentText.trim().isEmpty()) {
+                if (currentUserIntegrante == null) {
+                    FacesUtil.addErrorMessage("Error", "Debes ser miembro del proyecto para comentar");
+                    return;
+                }
+                workUnityFacade.addCommentToTask(task, currentUserIntegrante, newCommentText);
+                newCommentText = null;
+            }
+
             workUnityFacade.deliverTask(task);
             loadTaskData();
             FacesUtil.addSuccessMessage("Éxito", "Tarea entregada");
@@ -130,6 +143,34 @@ public class TaskDetailController implements Serializable {
         }
     }
 
+    public void prepareEditTask() {
+        if (task != null) {
+            this.editTaskTitle = task.getTitulo();
+            this.editTaskDescription = task.getDescripcion();
+            this.editTaskDeadline = java.util.Date.from(task.getFechaLimite()
+                    .atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+        }
+    }
+
+    public void updateTask() {
+        try {
+            if (currentUserIntegrante == null || currentUserIntegrante.getRol() != Rol.LIDER) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder del proyecto puede editar tareas");
+                return;
+            }
+
+            java.time.LocalDate fechaLimite = editTaskDeadline.toInstant()
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDate();
+
+            workUnityFacade.updateTask(taskId, editTaskTitle, editTaskDescription, fechaLimite);
+            loadTaskData();
+            FacesUtil.addSuccessMessage("Éxito", "Tarea actualizada correctamente");
+        } catch (Exception e) {
+            FacesUtil.addErrorMessage("Error", "Error al actualizar tarea: " + e.getMessage());
+        }
+    }
+
     public String deleteTask() {
         try {
             // Verificar que el usuario actual sea LÍDER del proyecto
@@ -148,11 +189,18 @@ public class TaskDetailController implements Serializable {
         }
     }
 
-    public String goBackToProject() {
-        if (task != null && task.getProyecto() != null) {
-            return "project-details?faces-redirect=true&projectId=" + task.getProyecto().getId();
+    public boolean isCanDeliver() {
+        if (task == null || task.isEntregada()) {
+            return false;
         }
-        return "projects?faces-redirect=true";
+        if (currentUserIntegrante == null || task.getIntegranteAsignado() == null) {
+            return false;
+        }
+        return task.getIntegranteAsignado().getId().equals(currentUserIntegrante.getId());
+    }
+
+    public boolean isCanEdit() {
+        return currentUserIntegrante != null && currentUserIntegrante.getRol() == Rol.LIDER;
     }
 
     public Long getTaskId() {
@@ -189,5 +237,36 @@ public class TaskDetailController implements Serializable {
 
     public Integrante getCurrentUserIntegrante() {
         return currentUserIntegrante;
+    }
+
+    public String getEditTaskTitle() {
+        return editTaskTitle;
+    }
+
+    public void setEditTaskTitle(String editTaskTitle) {
+        this.editTaskTitle = editTaskTitle;
+    }
+
+    public String getEditTaskDescription() {
+        return editTaskDescription;
+    }
+
+    public void setEditTaskDescription(String editTaskDescription) {
+        this.editTaskDescription = editTaskDescription;
+    }
+
+    public java.util.Date getEditTaskDeadline() {
+        return editTaskDeadline;
+    }
+
+    public void setEditTaskDeadline(java.util.Date editTaskDeadline) {
+        this.editTaskDeadline = editTaskDeadline;
+    }
+
+    public String backToProject() {
+        if (task != null && task.getProyecto() != null) {
+            return "project-details?faces-redirect=true&projectId=" + task.getProyecto().getId();
+        }
+        return "projects?faces-redirect=true";
     }
 }

@@ -4,23 +4,24 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.faces.context.FacesContext;
 import unl.edu.cc.workunity.business.WorkUnityFacade;
 import unl.edu.cc.workunity.domain.common.Entidad;
 import unl.edu.cc.workunity.domain.common.Integrante;
 import unl.edu.cc.workunity.domain.common.Proyecto;
 import unl.edu.cc.workunity.domain.common.Tarea;
 import unl.edu.cc.workunity.domain.common.enums.Rol;
+import unl.edu.cc.workunity.domain.security.User;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
+import unl.edu.cc.workunity.exception.ExistingIntegrantException;
 import unl.edu.cc.workunity.faces.FacesUtil;
 import unl.edu.cc.workunity.view.security.UserSession;
-
 import java.io.Serializable;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import jakarta.faces.context.FacesContext;
-import java.io.IOException;
 
 @Named
 @ViewScoped
@@ -45,6 +46,11 @@ public class ProjectDetailController implements Serializable {
     private String newTaskDescription;
     private Date newTaskDeadline;
     private Long selectedIntegranteId;
+    private String inviteEmailOrUsername;
+
+    private String editProjectName;
+    private String editProjectDescription;
+    private Date editProjectDeadline;
 
     @PostConstruct
     public void init() {
@@ -133,13 +139,100 @@ public class ProjectDetailController implements Serializable {
         return "task-details?faces-redirect=true&taskId=" + tarea.getId();
     }
 
-    public String goBackToProjects() {
-        return "projects?faces-redirect=true";
-    }
-
     public boolean isCurrentUserLeader() {
         return currentUserIntegrante != null &&
                 currentUserIntegrante.getRol() == Rol.LIDER;
+    }
+
+    public void inviteMember() {
+        try {
+            if (!isCurrentUserLeader()) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede invitar miembros.");
+                return;
+            }
+
+            if (inviteEmailOrUsername == null || inviteEmailOrUsername.trim().isEmpty()) {
+                FacesUtil.addErrorMessage("Error", "Ingresa un email o nombre de usuario.");
+                return;
+            }
+
+            User userFound = null;
+            try {
+                userFound = workUnityFacade.findUserByEmail(inviteEmailOrUsername);
+            } catch (EntityNotFoundException e) {
+                try {
+                    userFound = workUnityFacade.findUserByName(inviteEmailOrUsername);
+                } catch (EntityNotFoundException ex) {
+                    FacesUtil.addErrorMessage("Error", "Usuario no encontrado.");
+                    return;
+                }
+            }
+
+            Entidad newMemberEntity = userFound.getEntidad();
+
+            workUnityFacade.addMemberToProject(currentUserIntegrante, project, newMemberEntity);
+
+            members = workUnityFacade.findMembersByProject(project);
+            inviteEmailOrUsername = null;
+
+            FacesUtil.addSuccessMessage("Éxito", "Usuario agregado al proyecto.");
+
+        } catch (ExistingIntegrantException e) {
+            FacesUtil.addErrorMessage("Info", "El usuario ya es miembro del proyecto.");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("ConstraintViolationException")) {
+                FacesUtil.addErrorMessage("Info", "El usuario ya es miembro del proyecto.");
+            } else {
+                FacesUtil.addErrorMessage("Error", "Error al invitar usuario: " + msg);
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void prepareEditProject() {
+        if (project != null) {
+            this.editProjectName = project.getNombre();
+            this.editProjectDescription = project.getDescripcion();
+            this.editProjectDeadline = Date.from(project.getFechaLimite()
+                    .atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
+    }
+
+    public void updateProject() {
+        try {
+            if (!isCurrentUserLeader()) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede editar el proyecto.");
+                return;
+            }
+
+            LocalDate fechaLimite = editProjectDeadline.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            project = workUnityFacade.updateProject(project.getId(), editProjectName,
+                    editProjectDescription, fechaLimite);
+
+            FacesUtil.addSuccessMessage("Éxito", "Proyecto actualizado correctamente.");
+        } catch (Exception e) {
+            FacesUtil.addErrorMessage("Error", "Error al actualizar proyecto: " + e.getMessage());
+        }
+    }
+
+    public String deleteProject() {
+        try {
+            if (!isCurrentUserLeader()) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede eliminar el proyecto.");
+                return null;
+            }
+
+            workUnityFacade.deleteProject(project.getId());
+            FacesUtil.addSuccessMessageAndKeep("Éxito", "Proyecto eliminado correctamente.");
+            return "projects?faces-redirect=true";
+        } catch (Exception e) {
+            FacesUtil.addErrorMessage("Error", "Error al eliminar proyecto: " + e.getMessage());
+            return null;
+        }
     }
 
     private void clearNewTaskFields() {
@@ -215,5 +308,41 @@ public class ProjectDetailController implements Serializable {
 
     public Integrante getCurrentUserIntegrante() {
         return currentUserIntegrante;
+    }
+
+    public String getInviteEmailOrUsername() {
+        return inviteEmailOrUsername;
+    }
+
+    public void setInviteEmailOrUsername(String inviteEmailOrUsername) {
+        this.inviteEmailOrUsername = inviteEmailOrUsername;
+    }
+
+    public String getEditProjectName() {
+        return editProjectName;
+    }
+
+    public void setEditProjectName(String editProjectName) {
+        this.editProjectName = editProjectName;
+    }
+
+    public String getEditProjectDescription() {
+        return editProjectDescription;
+    }
+
+    public void setEditProjectDescription(String editProjectDescription) {
+        this.editProjectDescription = editProjectDescription;
+    }
+
+    public Date getEditProjectDeadline() {
+        return editProjectDeadline;
+    }
+
+    public void setEditProjectDeadline(Date editProjectDeadline) {
+        this.editProjectDeadline = editProjectDeadline;
+    }
+
+    public String backToProjects() {
+        return "projects?faces-redirect=true";
     }
 }

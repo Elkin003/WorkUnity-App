@@ -16,11 +16,11 @@
 .back-button:hover {
     background-color: #1e293b !important;
     color: #ffffff !important;
-    border-color: #fb6b39 !important;
+    border-color: #1f4fd8 !important;
 }
 
 .project-info-header {
-    background-color: #00081a;
+    background-color: #0f1c35;
     border: 1px solid #1e293b;
     border-radius: 8px;
     padding: 2rem;
@@ -56,15 +56,22 @@
 }
 
 .project-info-header strong {
-    color: #fb6b39;
+    color: #1f4fd8;
 }
 
 .new-task-button {
     margin-bottom: 1.5rem;
-    background-color: #22c55e !important;
-    border: none !important;
-    color: #000 !important;
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
+    color: #ffffff !important;
     font-weight: bold !important;
+    text-transform: uppercase;
+}
+
+.new-task-button:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
+    box-shadow: 0 0 10px rgba(31, 79, 216, 0.4);
 }
 
 .tasks-section,
@@ -82,9 +89,8 @@
     display: inline-block;
 }
 
-/* PrimeFaces DataTable Customization for Dark Theme */
 .ui-datatable {
-    background-color: #00081a;
+    background-color: #0f1c35;
     border: 1px solid #1e293b;
     border-radius: 8px;
     overflow: hidden;
@@ -92,14 +98,14 @@
 
 .ui-datatable .ui-datatable-header,
 .ui-datatable .ui-datatable-footer {
-    background-color: #000511 !important;
+    background-color: #081020 !important;
     border: none !important;
     color: #ffffff !important;
     padding: 1rem !important;
 }
 
 .ui-datatable thead th {
-    background-color: #0f172a !important;
+    background-color: #081020 !important;
     color: #cbd5e1 !important;
     border: none !important;
     border-bottom: 1px solid #334155 !important;
@@ -133,7 +139,6 @@
     font-weight: bold;
 }
 
-/* Badge Customization */
 .ui-badge {
     border-radius: 4px !important;
     font-weight: bold;
@@ -143,9 +148,9 @@
 }
 
 .ui-badge-success {
-    background-color: rgba(34, 197, 94, 0.2) !important;
-    color: #4ade80 !important;
-    border: 1px solid #22c55e;
+    background-color: rgba(31, 79, 216, 0.2) !important;
+    color: #60a5fa !important;
+    border: 1px solid #1f4fd8;
 }
 
 .ui-badge-danger {
@@ -155,9 +160,9 @@
 }
 
 .ui-badge-info {
-    background-color: rgba(59, 130, 246, 0.2) !important;
-    color: #60a5fa !important;
-    border: 1px solid #3b82f6;
+    background-color: rgba(14, 165, 233, 0.2) !important;
+    color: #38bdf8 !important;
+    border: 1px solid #0ea5e9;
 }
 
 .ui-badge-warning {
@@ -166,31 +171,72 @@
     border: 1px solid #f59e0b;
 }
 
-/* Dialog Styles (Reuse from Projects or similar) */
+.ui-button-success {
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-success:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
+}
+
 .dialog-task {
     padding: 1rem;
 }
 
 .ui-dialog {
-    background-color: #00081a !important;
+    background-color: #0f1c35 !important;
     border: 1px solid #1e293b !important;
 }
 
 .ui-dialog-titlebar {
-    background-color: #000511 !important;
+    background-color: #081020 !important;
     color: #fb6b39 !important;
     border-bottom: 1px solid #1e293b !important;
 }
 
 .ui-dialog-content {
-    background-color: #00081a !important;
+    background-color: #0f1c35 !important;
     color: #ffffff !important;
+}
+
+.ui-confirm-dialog-message {
+    color: #cbd5e1 !important;
+}
+
+.ui-confirm-dialog-icon {
+    color: #fb6b39 !important;
+}
+
+.ui-button-secondary {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-secondary:hover {
+    background-color: #475569 !important;
+    border-color: #475569 !important;
+}
+
+.ui-button-danger {
+    background-color: #ef4444 !important;
+    border: 1px solid #ef4444 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
 }
 
 .ui-panelgrid .ui-panelgrid-cell {
     background-color: transparent !important;
     border: none !important;
     color: #ffffff !important;
+    padding: 12px 10px !important;
 }
 
 .ui-outputlabel {
@@ -198,14 +244,34 @@
 }
 
 .ui-inputfield,
-.ui-inputtextarea {
-    background-color: #000511 !important;
+.ui-inputtextarea,
+.ui-calendar input,
+.ui-datepicker input {
+    background-color: #081020 !important;
     color: #ffffff !important;
     border: 1px solid #334155 !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box !important;
+    flex: 1;
+    width: auto !important;
+    min-width: 0;
+    height: 42px !important;
+    line-height: normal !important;
+    display: inline-flex !important;
+    align-items: center !important;
 }
 
-.ui-inputfield:focus {
-    border-color: #fb6b39 !important;
+.ui-inputtextarea {
+    height: auto !important;
+    display: block !important;
+    line-height: 1.5 !important;
+}
+
+.ui-inputfield:focus,
+.ui-inputtextarea:focus,
+.ui-calendar input:focus,
+.ui-datepicker input:focus {
+    border-color: #1f4fd8 !important;
 }
 
 .dialog-actions {
@@ -215,4 +281,13 @@
     margin-top: 1.5rem;
     border-top: 1px solid #1e293b;
     padding-top: 1rem;
+}
+
+.cancel-button {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
+}
+
+.cancel-button:hover {
+    background-color: #475569 !important;
 }

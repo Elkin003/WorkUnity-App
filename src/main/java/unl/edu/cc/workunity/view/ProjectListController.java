@@ -45,11 +45,13 @@ public class ProjectListController implements Serializable {
                 return;
             }
 
-            Entidad currentEntity = userSession.getUser().getEntidad();
-            if (currentEntity == null) {
+            Entidad sessionEntity = userSession.getUser().getEntidad();
+            if (sessionEntity == null) {
                 FacesUtil.addErrorMessage("Error", "Tu perfil no está completo");
                 return;
             }
+
+            Entidad currentEntity = workUnityFacade.findEntity(sessionEntity.getId());
 
             projects = workUnityFacade.findAllProjectsByEntity(currentEntity);
 

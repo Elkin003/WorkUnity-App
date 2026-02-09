@@ -102,9 +102,9 @@ public class Tarea implements Serializable {
     }
 
     public void entregar() {
-        if (this.archivo == null) {
-            throw new InvalidFile("No se puede entregar, sin un archivo adjunto");
-        }
+        // if (this.archivo == null) {
+        // throw new InvalidFile("No se puede entregar, sin un archivo adjunto");
+        // }
         setEntregada(true);
     }
 

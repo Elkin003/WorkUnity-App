@@ -34,15 +34,13 @@ public class ProfileController implements Serializable {
 
     private void calculateStatistics() {
         if (currentUser != null && currentUser.getEntidad() != null) {
-            // Contar proyectos creados
+
             List<Proyecto> createdProjects = currentUser.getEntidad().getProyectos();
             projectCount = createdProjects != null ? createdProjects.size() : 0;
 
-            // Contar membresías (proyectos donde es miembro)
             List<Integrante> memberships = currentUser.getEntidad().getIntegrantes();
             membershipCount = memberships != null ? memberships.size() : 0;
 
-            // Contar tareas asignadas a través de integrantes
             taskCount = 0;
             if (memberships != null) {
                 for (Integrante integrante : memberships) {
@@ -54,7 +52,6 @@ public class ProfileController implements Serializable {
         }
     }
 
-    // Getters
     public User getCurrentUser() {
         return currentUser;
     }

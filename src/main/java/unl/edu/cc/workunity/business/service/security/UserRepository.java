@@ -40,6 +40,15 @@ public class UserRepository {
         return userFound;
     }
 
+    public User findByEmail(@NotNull String email) throws EntityNotFoundException {
+        String query = "SELECT * FROM user_ WHERE email = '" + email + "'";
+        User userFound = crudService.findSingleResultOrNullWithNativeQuery(query, User.class);
+        if (userFound == null) {
+            throw new EntityNotFoundException("Usuario no encontrado con email [" + email + "]");
+        }
+        return userFound;
+    }
+
     public List<User> findAll() {
         return crudService.findWithNativeQuery("SELECT * FROM user_", User.class);
     }

@@ -7,6 +7,7 @@ import unl.edu.cc.workunity.business.service.common.EntityRepository;
 import unl.edu.cc.workunity.business.service.common.IntegrantRepository;
 import unl.edu.cc.workunity.business.service.common.ProjectRepository;
 import unl.edu.cc.workunity.business.service.common.TaskRepository;
+import unl.edu.cc.workunity.business.service.security.UserRepository;
 import unl.edu.cc.workunity.domain.common.Comentario;
 import unl.edu.cc.workunity.domain.common.Entidad;
 import unl.edu.cc.workunity.domain.common.Integrante;
@@ -14,6 +15,7 @@ import unl.edu.cc.workunity.domain.common.Proyecto;
 import unl.edu.cc.workunity.domain.common.Tarea;
 import unl.edu.cc.workunity.domain.common.enums.EstadoTarea;
 import unl.edu.cc.workunity.domain.common.enums.Rol;
+import unl.edu.cc.workunity.domain.security.User;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
 
 import java.time.LocalDate;
@@ -37,6 +39,9 @@ public class WorkUnityFacade {
 
     @Inject
     private CommentRepository commentRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     public Proyecto createProject(Entidad creador, String nombre, String descripcion, LocalDate fechaLimite) {
         Proyecto proyecto = new Proyecto(nombre, descripcion, fechaLimite, creador);
@@ -147,15 +152,25 @@ public class WorkUnityFacade {
         return taskRepository.find(id);
     }
 
-    public Integrante addMemberToProject(Integrante lider, Proyecto proyecto, Entidad nuevaEntidad) {
-        lider.agregarIntegrante(nuevaEntidad);
+    public Integrante addMemberToProject(Integrante lider, Proyecto proyecto, Entidad nuevaEntidad)
+            throws EntityNotFoundException {
+        if (lider.getRol() != Rol.LIDER) {
+            throw new unl.edu.cc.workunity.exception.UnauthorizedAccessException(
+                    "Solo el líder puede agregar miembros.");
+        }
 
-        List<Integrante> miembros = proyecto.getMiembros();
-        Integrante nuevoIntegrante = miembros.get(miembros.size() - 1);
+        Proyecto managedProject = projectRepository.find(proyecto.getId());
+        Entidad managedEntity = entityRepository.find(nuevaEntidad.getId());
 
+        try {
+            integrantRepository.findByProjectAndEntity(managedProject.getId(), managedEntity.getId());
+            throw new unl.edu.cc.workunity.exception.ExistingIntegrantException(
+                    "El integrante ya pertenece al proyecto.");
+        } catch (EntityNotFoundException e) {
+        }
+
+        Integrante nuevoIntegrante = new Integrante(Rol.MIEMBRO, managedEntity, managedProject);
         nuevoIntegrante = integrantRepository.save(nuevoIntegrante);
-        entityRepository.save(nuevaEntidad);
-        projectRepository.save(proyecto);
 
         return nuevoIntegrante;
     }
@@ -203,5 +218,13 @@ public class WorkUnityFacade {
 
     public Entidad saveEntity(Entidad entidad) {
         return entityRepository.save(entidad);
+    }
+
+    public User findUserByEmail(String email) throws EntityNotFoundException {
+        return userRepository.findByEmail(email);
+    }
+
+    public User findUserByName(String name) throws EntityNotFoundException {
+        return userRepository.find(name);
     }
 }
