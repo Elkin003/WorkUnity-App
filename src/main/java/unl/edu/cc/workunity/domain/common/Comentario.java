@@ -32,7 +32,6 @@ public class Comentario implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "autor_id", nullable = false)
-    @NotNull
     private Integrante autor;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -91,15 +90,17 @@ public class Comentario implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (this == o)
+            return true;
+        if (!(o instanceof Comentario))
             return false;
-        Comentario that = (Comentario) o;
-        return Objects.equals(texto, that.texto) && Objects.equals(autor, that.autor);
+        Comentario comentario = (Comentario) o;
+        return id != null && Objects.equals(id, comentario.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(texto, autor);
+        return Objects.hash(id);
     }
 
     @Override

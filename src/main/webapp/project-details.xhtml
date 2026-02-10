@@ -28,13 +28,20 @@
 
                 <!-- Botón Volver -->
                 <p:commandButton value="Volver a Proyectos" action="#{projectDetailController.backToProjects}"
-                                 icon="pi pi-arrow-left" styleClass="ui-button-secondary back-button" />
+                    icon="pi pi-arrow-left" styleClass="ui-button-secondary back-button"/>
 
                 <!-- Información del Proyecto -->
                 <div class="project-info-header">
-                    <h2>#{projectDetailController.project.nombre}</h2>
+                    <h2 style="display: flex; align-items: center; flex-wrap: wrap;">
+                        #{projectDetailController.project.nombre}
+                    </h2>
                     <p><strong>Descripción:</strong> #{projectDetailController.project.descripcion}</p>
                     <p><strong>Creado por:</strong> #{projectDetailController.project.creador.fullName}</p>
+                    <p><strong>Estado:</strong>
+                        <p:badge value="#{projectDetailController.project.estado}"
+                            severity="#{projectDetailController.project.estado == 'COMPLETADO' ? 'success' : 'info'}"
+                            styleClass="ml-2" />
+                    </p>
                     <p><strong>Fecha Límite:</strong> #{projectDetailController.project.fechaLimite}</p>
                 </div>
 
@@ -45,24 +52,31 @@
 
                 <!-- Botónes (líder) -->
                 <h:panelGroup layout="block" rendered="#{projectDetailController.currentUserLeader}"
-                              style="display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 2rem;">
+                    style="display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 2rem;">
+
+                    <p:commandButton
+                        value="#{projectDetailController.project.estado eq 'COMPLETADO' ? 'Reactivar' : 'Completar'}"
+                        icon="#{projectDetailController.project.estado eq 'COMPLETADO' ? 'pi pi-refresh' : 'pi pi-check'}"
+                        action="#{projectDetailController.toggleProjectStatus}" update="projectDetailForm"
+                        styleClass="new-task-button"
+                        style="background-color: #{projectDetailController.project.estado eq 'COMPLETADO' ? '#eab308' : '#22c55e'} !important; border-color: #{projectDetailController.project.estado eq 'COMPLETADO' ? '#eab308' : '#22c55e'} !important;"/>
                     <p:commandButton value="Nueva Tarea" icon="pi pi-plus" onclick="PF('newTaskDialog').show();"
-                                     styleClass="ui-button-success new-task-button" type="button"/>
+                        styleClass="ui-button-success new-task-button" type="button"/>
                     <p:commandButton value="Invitar Miembro" icon="pi pi-user-plus"
-                                     onclick="PF('inviteMemberDialog').show();" styleClass="ui-button-info new-task-button"
-                                     type="button"/>
+                        onclick="PF('inviteMemberDialog').show();" styleClass="ui-button-info new-task-button"
+                        type="button"/>
                     <p:commandButton value="Editar Proyecto" icon="pi pi-pencil"
-                                     action="#{projectDetailController.prepareEditProject}" update="editProjectForm"
-                                     oncomplete="PF('editProjectDialog').show();" styleClass="ui-button-warning new-task-button"/>
+                        action="#{projectDetailController.prepareEditProject}" update="editProjectForm"
+                        oncomplete="PF('editProjectDialog').show();" styleClass="ui-button-warning new-task-button"/>
                     <p:commandButton value="Eliminar Proyecto" icon="pi pi-trash"
-                                     onclick="PF('deleteProjectDialog').show();" styleClass="ui-button-danger new-task-button"/>
+                        onclick="PF('deleteProjectDialog').show();" styleClass="ui-button-danger new-task-button"/>
                 </h:panelGroup>
 
                 <!-- Lista de Tareas -->
                 <div class="tasks-section">
                     <h3>Tareas del Proyecto</h3>
                     <p:dataTable value="#{projectDetailController.tasks}" var="tarea"
-                                 emptyMessage="No hay tareas en este proyecto">
+                        emptyMessage="No hay tareas en este proyecto">
 
                         <p:column headerText="Título">
                             <h:outputText value="#{tarea.titulo}"/>
@@ -70,12 +84,12 @@
 
                         <p:column headerText="Estado">
                             <p:badge value="#{tarea.estado}"
-                                     severity="#{tarea.estado == 'COMPLETADA' ? 'success' : (tarea.estado == 'ATRASADA' ? 'danger' : 'info')}"/>
+                                severity="#{tarea.estado == 'COMPLETADA' ? 'success' : (tarea.estado == 'ATRASADA' ? 'danger' : 'info')}"/>
                         </p:column>
 
                         <p:column headerText="Asignado a">
                             <h:outputText
-                                    value="#{tarea.integranteAsignado != null ? tarea.integranteAsignado.entidad.fullName : 'Sin asignar'}"/>
+                                value="#{tarea.integranteAsignado != null ? tarea.integranteAsignado.entidad.fullName : 'Sin asignar'}"/>
                         </p:column>
 
                         <p:column headerText="Fecha Límite">
@@ -84,14 +98,14 @@
 
                         <p:column headerText="Acciones">
                             <p:commandButton value="Ver" action="#{projectDetailController.viewTask(tarea)}"
-                                             icon="pi pi-eye" styleClass="ui-button-info ui-button-sm" immediate="true"
-                                             ajax="false"/>
+                                icon="pi pi-eye" styleClass="ui-button-info ui-button-sm" immediate="true"
+                                ajax="false"/>
                             <p:commandButton icon="pi pi-trash" styleClass="ui-button-danger ui-button-sm"
-                                             action="#{projectDetailController.deleteTask(tarea)}"
-                                             rendered="#{projectDetailController.currentUserLeader}" update="projectDetailForm"
-                                             style="margin-left: 0.5rem;">
+                                action="#{projectDetailController.deleteTask(tarea)}"
+                                rendered="#{projectDetailController.currentUserLeader}" update="projectDetailForm"
+                                style="margin-left: 0.5rem;">
                                 <p:confirm header="Confirmar" message="¿Estás seguro de eliminar esta tarea?"
-                                           icon="pi pi-exclamation-triangle"/>
+                                    icon="pi pi-exclamation-triangle"/>
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
@@ -101,14 +115,21 @@
                 <div class="members-section">
                     <h3>Miembros del Proyecto</h3>
                     <p:dataTable value="#{projectDetailController.members}" var="miembro"
-                                 emptyMessage="No hay miembros">
-
+                        emptyMessage="No hay miembros">
                         <p:column headerText="Nombre">
                             <h:outputText value="#{miembro.entidad.fullName}"/>
                         </p:column>
-
                         <p:column headerText="Rol">
                             <p:badge value="#{miembro.rol}" severity="#{miembro.rol == 'LIDER' ? 'warning' : 'info'}"/>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton icon="pi pi-trash" styleClass="ui-button-danger ui-button-sm"
+                                title="Eliminar integrante" rendered="#{projectDetailController.currentUserLeader}"
+                                action="#{projectDetailController.removeMember(miembro)}" update="projectDetailForm">
+                                <p:confirm header="Confirmar Eliminación"
+                                    message="¿Estás seguro de eliminar a #{miembro.entidad.fullName} del proyecto? Las tareas asignadas quedarán sin asignar."
+                                    icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </div>
@@ -117,36 +138,36 @@
 
         <!-- Dialog para Crear Tarea -->
         <p:dialog header="Crear Nueva Tarea" widgetVar="newTaskDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
+            resizable="false">
             <h:form id="newTaskForm">
-                <div class="dialog-task">
-                    <p:panelGrid columns="2" layout="grid">
-                        <p:outputLabel for="taskTitle" value="Título:"/>
-                        <p:inputText id="taskTitle" value="#{projectDetailController.newTaskTitle}" required="true"
-                                     style="width: 100%;" />
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
+                        <p:outputLabel for="taskTitle" value="Título:" />
+                        <p:inputText id="taskTitle" value="#{projectDetailController.newTaskTitle}" required="true"/>
 
-                        <p:outputLabel for="taskDesc" value="Descripción:"/>
+                        <p:outputLabel for="taskDesc" value="Descripción:" />
                         <p:inputTextarea id="taskDesc" value="#{projectDetailController.newTaskDescription}" rows="3"
-                                         required="true" style="width: 100%;"/>
+                            required="true" />
 
-                        <p:outputLabel for="taskDeadline" value="Fecha Límite:"/>
+                        <p:outputLabel for="taskDeadline" value="Fecha Límite:" />
                         <p:calendar id="taskDeadline" value="#{projectDetailController.newTaskDeadline}" required="true"
-                                    pattern="dd/MM/yyyy" showButtonBar="true" readonlyInput="true"/>
+                            pattern="dd/MM/yyyy" showOn="button" readonlyInput="true" />
 
-                        <p:outputLabel for="assignTo" value="Asignar a:"/>
+                        <p:outputLabel for="assignTo" value="Asignar a:" />
                         <p:selectOneMenu id="assignTo" value="#{projectDetailController.selectedIntegranteId}">
                             <f:selectItem itemLabel="Sin asignar" itemValue="#{null}"/>
                             <f:selectItems value="#{projectDetailController.members}" var="m"
-                                           itemLabel="#{m.entidad.fullName}" itemValue="#{m.id}"/>
+                                itemLabel="#{m.entidad.fullName}" itemValue="#{m.id}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
 
-                    <div class="dialog-actions">
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
                         <p:commandButton value="Cancelar" onclick="PF('newTaskDialog').hide();"
-                                         styleClass="ui-button-secondary cancel-button" type="button"/>
+                            styleClass="ui-button-secondary cancel-button" type="button" icon="pi pi-times"/>
                         <p:commandButton value="Crear" action="#{projectDetailController.createTask}"
-                                         update="projectDetailForm" oncomplete="PF('newTaskDialog').hide();" icon="pi pi-check"
-                                         styleClass="ui-button-success"/>
+                            update="projectDetailForm" oncomplete="PF('newTaskDialog').hide();" icon="pi pi-check"
+                            styleClass="ui-button-success"/>
                     </div>
                 </div>
             </h:form>
@@ -154,52 +175,54 @@
 
         <!-- Dialog para Invitar Miembro -->
         <p:dialog header="Invitar a Proyecto" widgetVar="inviteMemberDialog" modal="true" showEffect="fade"
-                  hideEffect="fade" resizable="false">
+            hideEffect="fade" resizable="false">
             <h:form id="inviteMemberForm">
-                <div class="dialog-task">
-                    <p:panelGrid columns="2" layout="grid">
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
                         <p:outputLabel for="userEmail" value="Email o Usuario:"/>
                         <p:inputText id="userEmail" value="#{projectDetailController.inviteEmailOrUsername}"
-                                     required="true" style="width: 100%;" placeholder="ej. usuario@email.com o username"/>
+                            required="true" placeholder="ej. usuario@email.com o username"/>
                     </p:panelGrid>
 
-                    <div class="dialog-actions">
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
                         <p:commandButton value="Cancelar" onclick="PF('inviteMemberDialog').hide();"
-                                         styleClass="ui-button-secondary cancel-button" type="button"/>
+                            styleClass="ui-button-secondary cancel-button" type="button" icon="pi pi-times"/>
                         <p:commandButton value="Invitar" action="#{projectDetailController.inviteMember}"
-                                         update="projectDetailForm"
-                                         oncomplete="if (!args.validationFailed) PF('inviteMemberDialog').hide();" icon="pi pi-send"
-                                         styleClass="ui-button-success"/>
+                            update="projectDetailForm"
+                            oncomplete="if (!args.validationFailed) PF('inviteMemberDialog').hide();" icon="pi pi-send"
+                            styleClass="ui-button-success"/>
                     </div>
                 </div>
             </h:form>
         </p:dialog>
 
         <!-- Dialog para Editar Proyecto -->
-        <p:dialog header="Editar Proyecto" widgetVar="editProjectDialog" modal="true" showEffect="fade"
-                  hideEffect="fade" resizable="false">
+        <p:dialog header="Editar Proyecto" widgetVar="editProjectDialog" modal="true" responsive="true"
+            showEffect="fade" hideEffect="fade">
             <h:form id="editProjectForm">
-                <div class="dialog-project">
-                    <p:panelGrid columns="2" layout="grid">
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
                         <p:outputLabel for="editProjectName" value="Nombre:"/>
                         <p:inputText id="editProjectName" value="#{projectDetailController.editProjectName}"
-                                     required="true" style="width: 100%;"/>
+                            required="true"/>
 
                         <p:outputLabel for="editProjectDesc" value="Descripción:"/>
                         <p:inputTextarea id="editProjectDesc" value="#{projectDetailController.editProjectDescription}"
-                                         rows="3" required="true" style="width: 100%;"/>
+                            rows="3" required="true"/>
 
-                        <p:outputLabel for="editProjectDeadline" value="Fecha Límite:" />
+                        <p:outputLabel for="editProjectDeadline" value="Fecha Límite:"/>
                         <p:calendar id="editProjectDeadline" value="#{projectDetailController.editProjectDeadline}"
-                                    required="true" pattern="dd/MM/yyyy" showButtonBar="true" readonlyInput="true"/>
+                            required="true" pattern="dd/MM/yyyy" showOn="button" readonlyInput="true"/>
                     </p:panelGrid>
 
-                    <div class="dialog-actions">
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
                         <p:commandButton value="Cancelar" onclick="PF('editProjectDialog').hide();"
-                                         styleClass="ui-button-secondary cancel-button" type="button"/>
+                            styleClass="ui-button-secondary" type="button" icon="pi pi-times"/>
                         <p:commandButton value="Guardar Cambios" action="#{projectDetailController.updateProject}"
-                                         update="projectDetailForm" oncomplete="PF('editProjectDialog').hide();" icon="pi pi-check"
-                                         styleClass="ui-button-success"/>
+                            update="projectDetailForm" oncomplete="PF('editProjectDialog').hide();" icon="pi pi-save"
+                            styleClass="ui-button-success"/>
                     </div>
                 </div>
             </h:form>
@@ -207,18 +230,19 @@
 
         <!-- Dialog para Eliminar Proyecto -->
         <p:confirmDialog widgetVar="deleteProjectDialog" showEffect="fade" width="300"
-                         message="¿Estás seguro de eliminar este proyecto? Esta acción no se puede deshacer." header="Confirmar"
-                         severity="warn">
+            message="¿Estás seguro de eliminar este proyecto? Esta acción no se puede deshacer." header="Confirmar"
+            severity="warn">
             <p:commandButton value="Sí" icon="pi pi-check" action="#{projectDetailController.deleteProject}"
-                             oncomplete="PF('deleteProjectDialog').hide()"/>
+                oncomplete="PF('deleteProjectDialog').hide()"/>
             <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-                             onclick="PF('deleteProjectDialog').hide()"/>
+                onclick="PF('deleteProjectDialog').hide()"/>
         </p:confirmDialog>
 
         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-            <p:commandButton value="No" type="button" styleClass="ui-button-flat mr-2"
-                             style="color: #6c757d; border: 1px solid #6c757d;" icon="pi pi-times"/>
-            <p:commandButton value="Sí" type="button" styleClass="ui-button-danger" icon="pi pi-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat mr-2"
+                style="color: #6c757d; border: 1px solid #6c757d;" icon="pi pi-times"/>
+            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes ui-button-danger"
+                icon="pi pi-check"/>
         </p:confirmDialog>
     </ui:define>
 </ui:composition>

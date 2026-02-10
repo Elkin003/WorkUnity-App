@@ -8,7 +8,7 @@ INSERT INTO entidad (id, nombre, apellido, numerotelefono, fechacreacion, usuari
 INSERT INTO entidad (id, nombre, apellido, numerotelefono, fechacreacion, usuario_id) VALUES (3, 'Cristian', 'Guamán', '0965432109', CURRENT_DATE, 3);
 INSERT INTO entidad (id, nombre, apellido, numerotelefono, fechacreacion, usuario_id) VALUES (4, 'Jose', 'Salazar', '0954321098', CURRENT_DATE, 4);
 
-INSERT INTO proyecto (id, nombre, descripcion, fechacreacion, fechalimite, creador_id) VALUES (1, 'WorkUnity', 'Una aplicación web para la gestión de proyectos académicos en equipo', CURRENT_DATE, CURRENT_DATE + 90, 1);
+INSERT INTO proyecto (id, nombre, descripcion, fechacreacion, fechalimite, creador_id, estado) VALUES (1, 'WorkUnity', 'Una aplicación web para la gestión de proyectos académicos en equipo', CURRENT_DATE, CURRENT_DATE + 90, 1, 'ACTIVO');
 
 INSERT INTO integrante (id, rol, fechaunion, entidad_id, proyecto_id) VALUES (1, 'LIDER', CURRENT_DATE, 1, 1);
 INSERT INTO integrante (id, rol, fechaunion, entidad_id, proyecto_id) VALUES (2, 'MIEMBRO', CURRENT_DATE, 2, 1);

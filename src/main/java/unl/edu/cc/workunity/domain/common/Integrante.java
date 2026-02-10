@@ -146,17 +146,17 @@ public class Integrante implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (this == o)
+            return true;
+        if (!(o instanceof Integrante))
             return false;
-        Integrante that = (Integrante) o;
-        return rol == that.rol &&
-                Objects.equals(entidad, that.entidad) &&
-                Objects.equals(proyecto, that.proyecto);
+        Integrante integrante = (Integrante) o;
+        return id != null && Objects.equals(id, integrante.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rol, entidad, proyecto);
+        return Objects.hash(id);
     }
 
     @Override

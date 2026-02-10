@@ -13,10 +13,13 @@ import unl.edu.cc.workunity.domain.common.Entidad;
 import unl.edu.cc.workunity.domain.common.Integrante;
 import unl.edu.cc.workunity.domain.common.Proyecto;
 import unl.edu.cc.workunity.domain.common.Tarea;
+import unl.edu.cc.workunity.domain.common.enums.EstadoProyecto;
 import unl.edu.cc.workunity.domain.common.enums.EstadoTarea;
 import unl.edu.cc.workunity.domain.common.enums.Rol;
 import unl.edu.cc.workunity.domain.security.User;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
+import unl.edu.cc.workunity.exception.UnauthorizedAccessException;
+import unl.edu.cc.workunity.exception.ExistingIntegrantException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,6 +85,13 @@ public class WorkUnityFacade {
         projectRepository.delete(projectId);
     }
 
+    public void changeProjectStatus(Long projectId, EstadoProyecto nuevoEstado)
+            throws EntityNotFoundException {
+        Proyecto proyecto = projectRepository.find(projectId);
+        proyecto.setEstado(nuevoEstado);
+        projectRepository.save(proyecto);
+    }
+
     public List<Proyecto> findAllProjectsByEntity(Entidad entidad) {
         List<Integrante> memberships = entidad.getIntegrantes();
         List<Proyecto> projects = new ArrayList<>();
@@ -133,6 +143,12 @@ public class WorkUnityFacade {
         return taskRepository.save(tarea);
     }
 
+    public void unassignTask(Long taskId) throws EntityNotFoundException {
+        Tarea tarea = taskRepository.find(taskId);
+        tarea.setIntegranteAsignado(null);
+        taskRepository.save(tarea);
+    }
+
     public void deleteTask(Long taskId) throws EntityNotFoundException {
         Tarea tarea = taskRepository.find(taskId);
 
@@ -155,7 +171,7 @@ public class WorkUnityFacade {
     public Integrante addMemberToProject(Integrante lider, Proyecto proyecto, Entidad nuevaEntidad)
             throws EntityNotFoundException {
         if (lider.getRol() != Rol.LIDER) {
-            throw new unl.edu.cc.workunity.exception.UnauthorizedAccessException(
+            throw new UnauthorizedAccessException(
                     "Solo el líder puede agregar miembros.");
         }
 
@@ -164,7 +180,7 @@ public class WorkUnityFacade {
 
         try {
             integrantRepository.findByProjectAndEntity(managedProject.getId(), managedEntity.getId());
-            throw new unl.edu.cc.workunity.exception.ExistingIntegrantException(
+            throw new ExistingIntegrantException(
                     "El integrante ya pertenece al proyecto.");
         } catch (EntityNotFoundException e) {
         }
@@ -175,16 +191,30 @@ public class WorkUnityFacade {
         return nuevoIntegrante;
     }
 
-    public void removeMemberFromProject(Long integranteId) throws EntityNotFoundException {
-        Integrante integrante = integrantRepository.find(integranteId);
+    public void removeMemberFromProject(Long integranteId, Integrante lider)
+            throws EntityNotFoundException, UnauthorizedAccessException {
 
-        List<Tarea> tareas = taskRepository.findByIntegrante(integrante.getId());
-        for (Tarea tarea : tareas) {
+        if (lider.getRol() != Rol.LIDER) {
+            throw new UnauthorizedAccessException("Solo el líder puede eliminar miembros.");
+        }
+
+        Integrante integranteAEliminar = integrantRepository.find(integranteId);
+        if (integranteAEliminar == null) {
+            throw new EntityNotFoundException("Integrante no encontrado con ID " + integranteId);
+        }
+
+        if (integranteAEliminar.getRol() == Rol.LIDER) {
+            throw new UnauthorizedAccessException("No se puede eliminar al líder del proyecto.");
+        }
+
+        List<Tarea> tareasAsignadas = taskRepository.findByIntegrante(integranteAEliminar.getId());
+        for (Tarea tarea : tareasAsignadas) {
             tarea.setIntegranteAsignado(null);
             taskRepository.save(tarea);
         }
+        commentRepository.deleteByAuthor(integranteAEliminar.getId());
 
-        integrantRepository.delete(integranteId);
+        integrantRepository.deleteNative(integranteId);
     }
 
     public List<Integrante> findMembersByProject(Proyecto proyecto) {

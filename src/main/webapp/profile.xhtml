@@ -27,7 +27,13 @@
 
                 <!-- Card de Información Personal -->
                 <div class="profile-card">
-                    <h3>Información Personal</h3>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; margin-bottom: 1.5rem; padding-bottom: 0.5rem;">
+                        <h3 style="border: none; margin: 0; padding: 0;">Información Personal</h3>
+                        <p:commandButton value="Editar" icon="pi pi-pencil" action="#{profileController.prepareEdit}"
+                            update="editProfileForm" oncomplete="PF('editProfileDialog').show()"
+                            styleClass="ui-button-outlined ui-button-sm"/>
+                    </div>
                     <div class="profile-info">
                         <div class="profile-info-row">
                             <strong>Usuario:</strong>
@@ -86,6 +92,33 @@
                 </div>
             </div>
         </div>
+
+        <p:dialog header="Editar Perfil" widgetVar="editProfileDialog" modal="true" responsive="true" showEffect="fade"
+            hideEffect="fade">
+            <h:form id="editProfileForm">
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
+                        <p:outputLabel for="nombre" value="Nombre:"/>
+                        <p:inputText id="nombre" value="#{profileController.editNombre}" required="true"/>
+
+                        <p:outputLabel for="apellido" value="Apellido:"/>
+                        <p:inputText id="apellido" value="#{profileController.editApellido}" required="true"/>
+
+                        <p:outputLabel for="telefono" value="Teléfono:"/>
+                        <p:inputText id="telefono" value="#{profileController.editTelefono}"/>
+                    </p:panelGrid>
+
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                        <p:commandButton value="Cancelar" onclick="PF('editProfileDialog').hide()" type="button"
+                            styleClass="ui-button-secondary" icon="pi pi-times"/>
+                        <p:commandButton value="Guardar" action="#{profileController.updateProfile}" update="@form"
+                            oncomplete="if (!args.validationFailed) { PF('editProfileDialog').hide(); location.reload(); }"
+                            styleClass="ui-button-success" icon="pi pi-save"/>
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
     </ui:define>
 
     <ui:define name="footer">

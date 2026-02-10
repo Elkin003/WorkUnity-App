@@ -61,4 +61,9 @@ public class IntegrantRepository {
     public void delete(Long id) throws EntityNotFoundException {
         crudService.delete(Integrante.class, id);
     }
+
+    public void deleteNative(Long id) {
+        String query = "DELETE FROM integrante WHERE id = " + id;
+        crudService.updateWithNativeQuery(query, new java.util.HashMap<>());
+    }
 }

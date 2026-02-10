@@ -41,6 +41,9 @@ public class TaskDetailController implements Serializable {
     private String editTaskTitle;
     private String editTaskDescription;
     private java.util.Date editTaskDeadline;
+    private Long editTaskAssignedMemberId;
+
+    private List<Integrante> members;
 
     private String newCommentText;
 
@@ -57,10 +60,9 @@ public class TaskDetailController implements Serializable {
             comments = workUnityFacade.findCommentsByTask(task);
 
             Entidad currentEntity = userSession.getUser().getEntidad();
-            List<Integrante> projectMembers = workUnityFacade
-                    .findMembersByProject(task.getProyecto());
+            members = workUnityFacade.findMembersByProject(task.getProyecto());
 
-            currentUserIntegrante = projectMembers.stream()
+            currentUserIntegrante = members.stream()
                     .filter(i -> i.getEntidad().equals(currentEntity))
                     .findFirst()
                     .orElse(null);
@@ -149,6 +151,8 @@ public class TaskDetailController implements Serializable {
             this.editTaskDescription = task.getDescripcion();
             this.editTaskDeadline = java.util.Date.from(task.getFechaLimite()
                     .atStartOfDay(java.time.ZoneId.systemDefault()).toInstant());
+            this.editTaskAssignedMemberId = task.getIntegranteAsignado() != null ? task.getIntegranteAsignado().getId()
+                    : null;
         }
     }
 
@@ -164,6 +168,22 @@ public class TaskDetailController implements Serializable {
                     .toLocalDate();
 
             workUnityFacade.updateTask(taskId, editTaskTitle, editTaskDescription, fechaLimite);
+
+            this.task = workUnityFacade.findTask(taskId);
+
+            if (editTaskAssignedMemberId != null) {
+                Integrante newAssignee = members.stream()
+                        .filter(m -> m.getId().equals(editTaskAssignedMemberId))
+                        .findFirst()
+                        .orElse(null);
+
+                if (newAssignee != null) {
+                    workUnityFacade.assignTask(currentUserIntegrante, task, newAssignee);
+                }
+            } else {
+                workUnityFacade.unassignTask(taskId);
+            }
+
             loadTaskData();
             FacesUtil.addSuccessMessage("Éxito", "Tarea actualizada correctamente");
         } catch (Exception e) {
@@ -173,7 +193,6 @@ public class TaskDetailController implements Serializable {
 
     public String deleteTask() {
         try {
-            // Verificar que el usuario actual sea LÍDER del proyecto
             if (currentUserIntegrante == null || currentUserIntegrante.getRol() != Rol.LIDER) {
                 FacesUtil.addErrorMessage("Error", "Solo el líder del proyecto puede eliminar tareas");
                 return null;
@@ -261,6 +280,18 @@ public class TaskDetailController implements Serializable {
 
     public void setEditTaskDeadline(java.util.Date editTaskDeadline) {
         this.editTaskDeadline = editTaskDeadline;
+    }
+
+    public Long getEditTaskAssignedMemberId() {
+        return editTaskAssignedMemberId;
+    }
+
+    public void setEditTaskAssignedMemberId(Long editTaskAssignedMemberId) {
+        this.editTaskAssignedMemberId = editTaskAssignedMemberId;
+    }
+
+    public List<Integrante> getMembers() {
+        return members;
     }
 
     public String backToProject() {

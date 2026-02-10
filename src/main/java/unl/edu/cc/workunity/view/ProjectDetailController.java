@@ -11,9 +11,11 @@ import unl.edu.cc.workunity.domain.common.Integrante;
 import unl.edu.cc.workunity.domain.common.Proyecto;
 import unl.edu.cc.workunity.domain.common.Tarea;
 import unl.edu.cc.workunity.domain.common.enums.Rol;
+import unl.edu.cc.workunity.domain.common.enums.EstadoProyecto;
 import unl.edu.cc.workunity.domain.security.User;
 import unl.edu.cc.workunity.exception.EntityNotFoundException;
 import unl.edu.cc.workunity.exception.ExistingIntegrantException;
+import unl.edu.cc.workunity.exception.UnauthorizedAccessException;
 import unl.edu.cc.workunity.faces.FacesUtil;
 import unl.edu.cc.workunity.view.security.UserSession;
 import java.io.Serializable;
@@ -190,6 +192,27 @@ public class ProjectDetailController implements Serializable {
         }
     }
 
+    public void removeMember(Integrante miembro) {
+        try {
+            if (!isCurrentUserLeader()) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede eliminar miembros.");
+                return;
+            }
+
+            workUnityFacade.removeMemberFromProject(miembro.getId(), currentUserIntegrante);
+
+            members = workUnityFacade.findMembersByProject(project);
+
+            FacesUtil.addSuccessMessage("Éxito",
+                    "El integrante " + miembro.getEntidad().getFullName() + " ha sido eliminado del proyecto.");
+
+        } catch (UnauthorizedAccessException e) {
+            FacesUtil.addErrorMessage("Error", e.getMessage());
+        } catch (Exception e) {
+            FacesUtil.addErrorMessage("Error", "Error al eliminar integrante: " + e.getMessage());
+        }
+    }
+
     public void prepareEditProject() {
         if (project != null) {
             this.editProjectName = project.getNombre();
@@ -232,6 +255,37 @@ public class ProjectDetailController implements Serializable {
         } catch (Exception e) {
             FacesUtil.addErrorMessage("Error", "Error al eliminar proyecto: " + e.getMessage());
             return null;
+        }
+    }
+
+    public void toggleProjectStatus() {
+        try {
+            if (!isCurrentUserLeader()) {
+                FacesUtil.addErrorMessage("Error", "Solo el líder puede cambiar el estado del proyecto.");
+                return;
+            }
+
+            EstadoProyecto nuevoEstado;
+            if (project.getEstado() == EstadoProyecto.COMPLETADO) {
+                nuevoEstado = EstadoProyecto.ACTIVO;
+            } else {
+                nuevoEstado = EstadoProyecto.COMPLETADO;
+            }
+
+            workUnityFacade.changeProjectStatus(project.getId(), nuevoEstado);
+            project.setEstado(nuevoEstado);
+
+            String msg;
+            if (nuevoEstado == EstadoProyecto.COMPLETADO) {
+                msg = "Proyecto marcado como COMPLETADO.";
+            } else {
+                msg = "Proyecto reactivado.";
+            }
+
+            FacesUtil.addSuccessMessage("Estado Actualizado", msg);
+
+        } catch (Exception e) {
+            FacesUtil.addErrorMessage("Error", "Error al cambiar estado: " + e.getMessage());
         }
     }
 

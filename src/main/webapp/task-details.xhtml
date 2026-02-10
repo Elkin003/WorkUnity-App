@@ -28,7 +28,7 @@
 
                 <!-- Botón Volver -->
                 <p:commandButton value="Volver al Proyecto" action="#{taskDetailController.backToProject}"
-                                 icon="pi pi-arrow-left" styleClass="ui-button-secondary back-button"/>
+                    icon="pi pi-arrow-left" styleClass="ui-button-secondary back-button"/>
 
                 <!-- Información de la Tarea -->
                 <div class="task-info-header">
@@ -36,11 +36,11 @@
                     <p><strong>Descripción:</strong> #{taskDetailController.task.descripcion}</p>
                     <p><strong>Estado:</strong>
                         <p:badge value="#{taskDetailController.task.estado}"
-                                 severity="#{taskDetailController.task.estado == 'COMPLETADA' ? 'success' : (taskDetailController.task.estado == 'ATRASADA' ? 'danger' : 'info')}"/>
+                            severity="#{taskDetailController.task.estado == 'COMPLETADA' ? 'success' : (taskDetailController.task.estado == 'ATRASADA' ? 'danger' : 'info')}"/>
                     </p>
                     <p><strong>Asignado a:</strong>
                         #{taskDetailController.task.integranteAsignado != null ?
-                                taskDetailController.task.integranteAsignado.entidad.fullName : 'Sin asignar'}
+                        taskDetailController.task.integranteAsignado.entidad.fullName : 'Sin asignar'}
                     </p>
                     <p><strong>Fecha de Asignación:</strong> #{taskDetailController.task.fechaAsignacion}</p>
                     <p><strong>Fecha Límite:</strong> #{taskDetailController.task.fechaLimite}</p>
@@ -50,23 +50,23 @@
 
                 <!-- Mensajes -->
                 <p:messages showDetail="true">
-                    <p:autoUpdate/>
+                    <p:autoUpdate />
                 </p:messages>
 
                 <!-- Botones -->
                 <h:panelGroup layout="block"
-                              style="display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 2rem;">
+                    style="display: flex; justify-content: flex-end; gap: 1rem; margin-bottom: 2rem;">
 
                     <p:commandButton value="Entregar Tarea" icon="pi pi-check-circle"
-                                     onclick="PF('deliveryDialog').show();" styleClass="ui-button-success action-button"
-                                     rendered="#{taskDetailController.canDeliver}" type="button"/>
+                        onclick="PF('deliveryDialog').show();" styleClass="ui-button-success action-button"
+                        rendered="#{taskDetailController.canDeliver}" type="button"/>
                     <p:commandButton value="Editar Tarea" action="#{taskDetailController.prepareEditTask}"
-                                     update="editTaskForm" oncomplete="PF('editTaskDialog').show();" icon="pi pi-pencil"
-                                     styleClass="ui-button-success ui-button-sm action-button"
-                                     rendered="#{taskDetailController.canEdit}"/>
+                        update="editTaskForm" oncomplete="PF('editTaskDialog').show();" icon="pi pi-pencil"
+                        styleClass="ui-button-success ui-button-sm action-button"
+                        rendered="#{taskDetailController.canEdit}"/>
                     <p:commandButton value="Eliminar Tarea" icon="pi pi-trash" styleClass="ui-button-danger"
-                                     oncomplete="PF('deleteTaskDialog').show()" rendered="#{taskDetailController.canEdit}"
-                                     process="@this"/>
+                        oncomplete="PF('deleteTaskDialog').show()" rendered="#{taskDetailController.canEdit}"
+                        process="@this"/>
 
                 </h:panelGroup>
 
@@ -91,9 +91,9 @@
                     <div class="new-comment-box">
                         <h4>Agregar Comentario</h4>
                         <p:inputTextarea value="#{taskDetailController.newCommentText}" rows="3"
-                                         placeholder="Escribe tu comentario aquí..." styleClass="comment-textarea"/>
+                            placeholder="Escribe tu comentario aquí..." styleClass="comment-textarea"/>
                         <p:commandButton value="Publicar Comentario" action="#{taskDetailController.addComment}"
-                                         update="taskDetailForm" icon="pi pi-send" styleClass="ui-button-success"/>
+                            update="taskDetailForm" icon="pi pi-send" styleClass="ui-button-success"/>
                     </div>
                 </div>
             </div>
@@ -101,64 +101,73 @@
 
         <!-- Dialog para Entregar Tarea -->
         <p:dialog header="Confirmar Entrega" widgetVar="deliveryDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
+            resizable="false">
             <h:form id="deliveryForm">
-                <div class="dialog-task">
-                    <p>¿Deseas agregar un comentario a tu entrega?</p>
-                    <p:inputTextarea value="#{taskDetailController.newCommentText}" rows="4"
-                                     placeholder="Escribe un comentario (opcional)..." style="width: 100%; margin-bottom: 1rem;"/>
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p class="mb-3" style="color: #cbd5e1;">¿Deseas agregar un comentario a tu entrega?</p>
+                    <div class="ui-fluid">
+                        <p:inputTextarea value="#{taskDetailController.newCommentText}" rows="4"
+                            placeholder="Escribe un comentario (opcional)..."/>
+                    </div>
 
-                    <div class="dialog-actions">
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
                         <p:commandButton value="Cancelar" onclick="PF('deliveryDialog').hide();"
-                                         styleClass="ui-button-secondary cancel-button" type="button"/>
+                            styleClass="ui-button-secondary cancel-button" type="button" icon="pi pi-times"/>
                         <p:commandButton value="Entregar" action="#{taskDetailController.deliverTask}"
-                                         update="taskDetailForm" oncomplete="PF('deliveryDialog').hide();" icon="pi pi-check"
-                                         styleClass="ui-button-success"/>
+                            update="taskDetailForm" oncomplete="PF('deliveryDialog').hide();" icon="pi pi-check"
+                            styleClass="ui-button-success"/>
                     </div>
                 </div>
             </h:form>
         </p:dialog>
 
         <!-- Dialog para Editar Tarea -->
-        <p:dialog header="Editar Tarea" widgetVar="editTaskDialog" modal="true" showEffect="fade" hideEffect="fade"
-                  resizable="false">
+        <p:dialog header="Editar Tarea" widgetVar="editTaskDialog" modal="true" responsive="true" showEffect="fade"
+            hideEffect="fade">
             <h:form id="editTaskForm">
-                <div class="ui-fluid">
-                    <div class="field">
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
                         <p:outputLabel for="editTaskTitulo" value="Título"/>
                         <p:inputText id="editTaskTitulo" value="#{taskDetailController.editTaskTitle}"
-                                     required="true"/>
-                    </div>
-                    <div class="field">
+                            required="true"/>
+
                         <p:outputLabel for="editTaskDescripcion" value="Descripción"/>
                         <p:inputTextarea id="editTaskDescripcion" value="#{taskDetailController.editTaskDescription}"
-                                         rows="4"/>
-                    </div>
-                    <div class="field">
-                        <p:outputLabel for="editTaskFechaLimite" value="Fecha Límite"/>
-                        <p:datePicker id="editTaskFechaLimite" value="#{taskDetailController.editTaskDeadline}"
-                                      showIcon="true" required="true" pattern="yyyy-MM-dd" readonlyInput="true"/>
-                    </div>
-                </div>
+                            rows="4"/>
 
-                <div class="dialog-actions">
-                    <p:commandButton value="Cancelar" onclick="PF('editTaskDialog').hide();"
-                                     styleClass="ui-button-secondary cancel-button" type="button"/>
-                    <p:commandButton value="Guardar Cambios" action="#{taskDetailController.updateTask}"
-                                     update="taskDetailForm" oncomplete="PF('editTaskDialog').hide();" icon="pi pi-check"
-                                     styleClass="ui-button-success"/>
+                        <p:outputLabel for="editTaskFechaLimite" value="Fecha Límite"/>
+                        <p:calendar id="editTaskFechaLimite" value="#{taskDetailController.editTaskDeadline}"
+                            showOn="button" required="true" pattern="yyyy-MM-dd" readonlyInput="true"/>
+
+                        <p:outputLabel for="editTaskAssign" value="Asignar a"/>
+                        <p:selectOneMenu id="editTaskAssign" value="#{taskDetailController.editTaskAssignedMemberId}">
+                            <f:selectItem itemLabel="Sin asignar" itemValue="#{null}"/>
+                            <f:selectItems value="#{taskDetailController.members}" var="m"
+                                itemLabel="#{m.entidad.fullName}" itemValue="#{m.id}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                        <p:commandButton value="Cancelar" onclick="PF('editTaskDialog').hide();"
+                            styleClass="ui-button-secondary" type="button" icon="pi pi-times"/>
+                        <p:commandButton value="Guardar Cambios" action="#{taskDetailController.updateTask}"
+                            update="taskDetailForm" oncomplete="PF('editTaskDialog').hide();" icon="pi pi-save"
+                            styleClass="ui-button-success"/>
+                    </div>
                 </div>
             </h:form>
         </p:dialog>
 
         <!-- Dialog para Eliminar Tarea -->
         <p:confirmDialog widgetVar="deleteTaskDialog" showEffect="fade" width="300"
-                         message="¿Estás seguro de eliminar esta tarea? Esta acción no se puede deshacer." header="Confirmar"
-                         severity="warn">
+            message="¿Estás seguro de eliminar esta tarea? Esta acción no se puede deshacer." header="Confirmar"
+            severity="warn">
             <p:commandButton value="Sí" icon="pi pi-check" action="#{taskDetailController.deleteTask}"
-                             oncomplete="PF('deleteTaskDialog').hide()"/>
+                oncomplete="PF('deleteTaskDialog').hide()"/>
             <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi-times"
-                             onclick="PF('deleteTaskDialog').hide()"/>
+                onclick="PF('deleteTaskDialog').hide()"/>
         </p:confirmDialog>
     </ui:define>
 </ui:composition>

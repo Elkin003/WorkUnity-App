@@ -39,7 +39,17 @@ public class CommentRepository {
         return crudService.findWithNativeQuery(query, Comentario.class);
     }
 
-    public void delete(Long id) throws EntityNotFoundException {
+    public List<Comentario> findByAuthor(Long autorId) {
+        String query = "SELECT * FROM comentario WHERE autor_id = " + autorId;
+        return crudService.findWithNativeQuery(query, Comentario.class);
+    }
+
+    public void deleteByAuthor(Long autorId) {
+        String query = "DELETE FROM comentario WHERE autor_id = " + autorId;
+        crudService.updateWithNativeQuery(query, new java.util.HashMap<>());
+    }
+
+    public void delete(Long id) {
         crudService.delete(Comentario.class, id);
     }
 }

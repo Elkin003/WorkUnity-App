@@ -130,3 +130,203 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
+
+.ui-dialog {
+    background-color: #0f1c35 !important;
+    border: 1px solid #1e293b !important;
+}
+
+.ui-dialog-titlebar {
+    background-color: #081020 !important;
+    color: #fb6b39 !important;
+    border-bottom: 1px solid #1e293b !important;
+}
+
+.ui-dialog-content {
+    background-color: #0f1c35 !important;
+    color: #ffffff !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    background-color: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 12px 10px !important;
+}
+
+.ui-outputlabel {
+    color: #cbd5e1 !important;
+}
+
+.ui-inputfield,
+.ui-inputtextarea,
+.ui-calendar input,
+.ui-datepicker input {
+    background-color: #081020 !important;
+    color: #ffffff !important;
+    border: 1px solid #334155 !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box !important;
+    flex: 1;
+    width: auto !important;
+    min-width: 0;
+    height: 42px !important;
+    line-height: normal !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.ui-inputtextarea {
+    height: auto !important;
+    display: block !important;
+    line-height: 1.5 !important;
+}
+
+.ui-inputfield:focus,
+.ui-inputtextarea:focus,
+.ui-calendar input:focus,
+.ui-datepicker input:focus {
+    border-color: #1f4fd8 !important;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #1e293b;
+    padding-top: 1rem;
+}
+
+.ui-button-secondary {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-secondary:hover {
+    background-color: #475569 !important;
+    border-color: #475569 !important;
+}
+
+.ui-button-success {
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-success:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
+}
+
+.ui-dialog {
+    background-color: #0f1c35 !important;
+    border: 1px solid #1e293b !important;
+}
+
+.ui-dialog-titlebar {
+    background-color: #081020 !important;
+    color: #fb6b39 !important;
+    border-bottom: 1px solid #1e293b !important;
+}
+
+.ui-dialog-content {
+    background-color: #0f1c35 !important;
+    color: #ffffff !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell {
+    background-color: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 12px 10px !important;
+}
+
+.ui-outputlabel {
+    color: #cbd5e1 !important;
+}
+
+.ui-inputfield,
+.ui-inputtextarea,
+.ui-calendar input,
+.ui-datepicker input {
+    background-color: #081020 !important;
+    color: #ffffff !important;
+    border: 1px solid #334155 !important;
+    padding: 0.5rem !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 42px !important;
+    line-height: normal !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.ui-dialog.ui-confirm-dialog .ui-dialog-content,
+.ui-confirm-dialog .ui-dialog-content {
+    background-color: #0f1c35 !important;
+    color: #cbd5e1 !important;
+    padding: 1.5rem !important;
+}
+
+.ui-confirm-dialog .ui-dialog-buttonpane {
+    background-color: #0f1c35 !important;
+    border-top: 1px solid #1e293b !important;
+    padding: 1rem !important;
+    margin: 0 !important;
+}
+
+.ui-confirm-dialog-message {
+    color: #cbd5e1 !important;
+    margin-left: 1rem !important;
+}
+
+.ui-confirm-dialog-icon {
+    color: #fb6b39 !important;
+    font-size: 2rem !important;
+}
+
+.ui-inputtextarea {
+    height: auto !important;
+    display: block !important;
+    line-height: 1.5 !important;
+}
+
+.ui-inputfield:focus,
+.ui-inputtextarea:focus,
+.ui-calendar input:focus,
+.ui-datepicker input:focus {
+    border-color: #1f4fd8 !important;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #1e293b;
+    padding-top: 1rem;
+}
+
+.ui-button-secondary {
+    background-color: #334155 !important;
+    border: 1px solid #334155 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-secondary:hover {
+    background-color: #475569 !important;
+    border-color: #475569 !important;
+}
+
+.ui-button-success {
+    background-color: #1f4fd8 !important;
+    border: 1px solid #1f4fd8 !important;
+    color: #ffffff !important;
+}
+
+.ui-button-success:hover {
+    background-color: #15359a !important;
+    border-color: #15359a !important;
+}

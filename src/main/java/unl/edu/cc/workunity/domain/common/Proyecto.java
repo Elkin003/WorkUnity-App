@@ -3,6 +3,7 @@ package unl.edu.cc.workunity.domain.common;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import unl.edu.cc.workunity.domain.common.enums.EstadoProyecto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -44,6 +45,11 @@ public class Proyecto implements Serializable {
     @NotNull
     private Entidad creador;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private EstadoProyecto estado;
+
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Integrante> miembros;
 
@@ -62,6 +68,7 @@ public class Proyecto implements Serializable {
         this.fechaCreacion = LocalDate.now();
         this.fechaLimite = fechaLimite;
         this.creador = creador;
+        this.estado = EstadoProyecto.ACTIVO;
     }
 
     public Long getId() {
@@ -112,6 +119,14 @@ public class Proyecto implements Serializable {
         this.creador = creador;
     }
 
+    public EstadoProyecto getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoProyecto estado) {
+        this.estado = estado;
+    }
+
     public List<Integrante> getMiembros() {
         if (miembros == null) {
             miembros = new ArrayList<>();
@@ -136,17 +151,17 @@ public class Proyecto implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (this == o)
+            return true;
+        if (!(o instanceof Proyecto))
             return false;
         Proyecto proyecto = (Proyecto) o;
-        return Objects.equals(nombre, proyecto.nombre) &&
-                Objects.equals(descripcion, proyecto.descripcion) &&
-                Objects.equals(creador, proyecto.creador);
+        return id != null && Objects.equals(id, proyecto.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, descripcion, creador);
+        return Objects.hash(id);
     }
 
     @Override

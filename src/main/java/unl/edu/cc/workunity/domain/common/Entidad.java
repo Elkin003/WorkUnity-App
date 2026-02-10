@@ -51,7 +51,7 @@ public class Entidad implements Serializable {
     @OneToMany(mappedBy = "creador", cascade = CascadeType.ALL)
     private List<Proyecto> proyectos;
 
-    @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "entidad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Integrante> integrantes;
 
     public Entidad() {
@@ -169,17 +169,17 @@ public class Entidad implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (this == o)
+            return true;
+        if (!(o instanceof Entidad))
             return false;
         Entidad entidad = (Entidad) o;
-        return Objects.equals(nombre, entidad.nombre) &&
-                Objects.equals(apellido, entidad.apellido) &&
-                Objects.equals(numeroTelefono, entidad.numeroTelefono);
+        return id != null && Objects.equals(id, entidad.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre, apellido, numeroTelefono);
+        return Objects.hash(id);
     }
 
     @Override

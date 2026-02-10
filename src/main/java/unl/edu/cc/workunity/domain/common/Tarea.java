@@ -209,17 +209,17 @@ public class Tarea implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass())
+        if (this == o)
+            return true;
+        if (!(o instanceof Tarea))
             return false;
         Tarea tarea = (Tarea) o;
-        return Objects.equals(titulo, tarea.titulo) &&
-                Objects.equals(fechaLimite, tarea.fechaLimite) &&
-                Objects.equals(proyecto, tarea.proyecto);
+        return id != null && Objects.equals(id, tarea.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(titulo, fechaLimite, proyecto);
+        return Objects.hash(id);
     }
 
     @Override

@@ -24,7 +24,7 @@
                 <div class="projects-header">
                     <h2 class="projects-title">Mis Proyectos</h2>
                     <p:commandButton value="Nuevo Proyecto" icon="pi pi-plus" onclick="PF('newProjectDialog').show();"
-                                     styleClass="ui-button-success" type="button"/>
+                        styleClass="ui-button-success" type="button"/>
                 </div>
 
                 <!-- Mensajes -->
@@ -34,8 +34,8 @@
 
                 <!-- Lista de Proyectos en Cards -->
                 <p:dataView value="#{projectListController.projects}" var="proyecto"
-                            emptyMessage="No tienes proyectos. ¡Crea uno nuevo!" layout="grid" gridIcon="pi pi-th-large"
-                            listIcon="pi pi-bars">
+                    emptyMessage="No tienes proyectos. ¡Crea uno nuevo!" layout="grid" gridIcon="pi pi-th-large"
+                    listIcon="pi pi-bars">
 
                     <p:dataViewGridItem>
                         <div class="project-card">
@@ -44,13 +44,18 @@
 
                             <div class="project-info-box">
                                 <p><strong>Fecha Límite:</strong> #{proyecto.fechaLimite}</p>
+                                <p><strong>Estado:</strong>
+                                    <p:badge value="#{proyecto.estado}"
+                                        severity="#{proyecto.estado == 'COMPLETADO' ? 'success' : 'info'}"
+                                        styleClass="ml-2"/>
+                                </p>
                                 <p><strong>Tareas:</strong> #{proyecto.tareas.size()}</p>
                                 <p><strong>Miembros:</strong> #{proyecto.miembros.size()}</p>
                             </div>
 
                             <p:commandButton value="Ver Detalles"
-                                             action="#{projectListController.viewProject(proyecto)}" icon="pi pi-eye"
-                                             styleClass="ui-button-success view-project-button" immediate="true" ajax="false"/>
+                                action="#{projectListController.viewProject(proyecto)}" icon="pi pi-eye"
+                                styleClass="ui-button-success view-project-button" immediate="true" ajax="false"/>
                         </div>
                     </p:dataViewGridItem>
                 </p:dataView>
@@ -58,34 +63,33 @@
 
             <!-- Dialog para Crear Proyecto -->
             <p:dialog header="Crear Nuevo Proyecto" widgetVar="newProjectDialog" modal="true" showEffect="fade"
-                      hideEffect="fade" resizable="false">
+                hideEffect="fade" resizable="false">
 
-                <div class="dialog-project">
-                    <p:panelGrid columns="2" layout="grid">
+                <div class="dialog-content" style="padding: 1rem;">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-fluid">
                         <p:outputLabel for="projectName" value="Nombre:"/>
-                        <p:inputText id="projectName" value="#{projectListController.newProjectName}" required="true"
-                                     style="width: 100%;"/>
+                        <p:inputText id="projectName" value="#{projectListController.newProjectName}" required="true"/>
 
                         <p:outputLabel for="projectDesc" value="Descripción:"/>
                         <p:inputTextarea id="projectDesc" value="#{projectListController.newProjectDescription}"
-                                         rows="3" required="true" style="width: 100%;"/>
+                            rows="3" required="true"/>
 
                         <p:outputLabel for="projectDeadline" value="Fecha Límite:"/>
                         <p:calendar id="projectDeadline" value="#{projectListController.newProjectDeadline}"
-                                    required="true" pattern="dd/MM/yyyy" showButtonBar="true" readonlyInput="true"/>
+                            required="true" pattern="dd/MM/yyyy" showOn="button" readonlyInput="true"/>
                     </p:panelGrid>
 
-                    <div class="dialog-actions">
+                    <div class="dialog-actions"
+                        style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem;">
                         <p:commandButton value="Cancelar" onclick="PF('newProjectDialog').hide();"
-                                         styleClass="ui-button-secondary cancel-button" type="button"/>
+                            styleClass="ui-button-secondary cancel-button" type="button" icon="pi pi-times"/>
                         <p:commandButton value="Crear" action="#{projectListController.createProject}"
-                                         update="projectForm" oncomplete="PF('newProjectDialog').hide();" icon="pi pi-check"
-                                         styleClass="ui-button-success create-button-orange"/>
+                            update="projectForm" oncomplete="PF('newProjectDialog').hide();" icon="pi pi-check"
+                            styleClass="ui-button-success create-button-orange"/>
                     </div>
                 </div>
             </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
-
 </html>
